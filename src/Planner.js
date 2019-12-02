@@ -1,19 +1,67 @@
 import React from "react";
+import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
+import Login from "./components/Login";
 import VisibilityFilters from "./components/VisibilityFilters";
 import "./styles.css";
+import { connect } from "react-redux";
+import { getLogin } from "./redux/selectors";
+import { API_URL } from './constants';
+import { addTodo, toggleTodo } from './redux/actions';
 
-export default function Planner() {
-    return (
-        <Container className="todo-app">
-            <Row><h1>Planner</h1></Row>
-            <Row><AddTodo /></Row>
-            <Row><TodoList /></Row>
-            <Row><VisibilityFilters /></Row>
-        </Container>
-    );
+const mapStateToProps = state => {
+    const login = getLogin(state);
+    return { login }
 }
+
+class Planner extends React.Component {
+
+    renderPlannerContent() {
+        return (
+            <>
+                <Row><Col className="center">
+                    <h1>Planner</h1>
+                </Col></Row>
+                <Row><AddTodo /></Row>
+                <Row><TodoList /></Row>
+                <Row><VisibilityFilters /></Row>
+            </>
+        )
+    }
+
+    componentDidUpdate() {
+        if (this.props.login) {
+            axios.post(API_URL + 'planner/get_plans', {}, {withCredentials: true})
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                const saved_todos = res.data;
+                saved_todos.forEach(function(item) {
+
+                    this.props.addTodo(
+                        item.id,
+                        item.tag + ' - ' + item.data
+                    );
+                    if (item.done) {
+                        this.props.toggleTodo(item.id);
+                    }
+                }.bind(this));
+            })
+        }
+    }
+
+    render() {
+        return (
+            <Container className="todo-app">
+                {this.props.login ? this.renderPlannerContent() : <Login />}
+            </Container>
+        )
+    };
+}
+
+export default connect(mapStateToProps, { addTodo, toggleTodo })(Planner);

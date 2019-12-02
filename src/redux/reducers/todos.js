@@ -1,8 +1,9 @@
-import { ADD_TODO, TOGGLE_TODO } from "../actionTypes";
+import { ADD_TODO, TOGGLE_TODO, LOGIN, DELETE_ALL_COMPLETE } from "../actionTypes";
 
 const initialState = {
-  allIds: [],
-  byIds: {}
+    login: false,
+    allIds: [],
+    byIds: {}
 };
 
 export default function(state = initialState, action) {
@@ -32,6 +33,18 @@ export default function(state = initialState, action) {
             completed: !state.byIds[id].completed
           }
         }
+      };
+    }
+    case LOGIN: {
+        return {
+            ...state,
+            login: true
+        };
+    }
+    case DELETE_ALL_COMPLETE: {
+      return {
+        ...state,
+        allIds: state.allIds.filter((plan_id, index) => !state.byIds[plan_id].completed)
       };
     }
     default:

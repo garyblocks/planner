@@ -23,3 +23,5 @@ export const getTodosByVisibilityFilter = (store, visibilityFilter) => {
             return allTodos;
     }
 }
+
+export const getLogin = store => getTodoState(store).login;
