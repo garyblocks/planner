@@ -3,6 +3,8 @@ import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { DndProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
@@ -23,14 +25,19 @@ class Planner extends React.Component {
 
     renderPlannerContent() {
         return (
-            <>
+            <DndProvider backend={HTML5Backend}>
                 <Row><Col className="center">
                     <h1>Planner</h1>
                 </Col></Row>
                 <Row><AddTodo /></Row>
-                <Row><TodoList /></Row>
-                <Row><VisibilityFilters /></Row>
-            </>
+                <Row>
+                    <Col>
+                        <Row><TodoList /></Row>
+                        <Row><VisibilityFilters /></Row>
+                    </Col>
+                    <Col></Col>
+                </Row>
+            </DndProvider>
         )
     }
 

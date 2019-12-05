@@ -1,4 +1,6 @@
-import { ADD_TODO, TOGGLE_TODO, LOGIN, DELETE_ALL_COMPLETE } from "../actionTypes";
+import {
+    ADD_TODO, TOGGLE_TODO, LOGIN, DELETE_ALL_COMPLETE, SWAP_PLAN
+} from "../actionTypes";
 
 const initialState = {
     login: false,
@@ -46,6 +48,23 @@ export default function(state = initialState, action) {
         ...state,
         allIds: state.allIds.filter((plan_id, index) => !state.byIds[plan_id].completed)
       };
+    }
+    case SWAP_PLAN: {
+        const { index1, index2 } = action.payload;
+        const id1 = state.allIds[index1];
+        const id2 = state.allIds[index2];
+        return {
+            ...state,
+            allIds: state.allIds.map((plan_id, idx) => {
+                if (idx === index1) {
+                    return id2;
+                } else if (idx === index2) {
+                    return id1;
+                }
+
+                return plan_id;
+            })
+        };
     }
     default:
       return state;
