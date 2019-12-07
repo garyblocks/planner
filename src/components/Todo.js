@@ -1,16 +1,16 @@
 import React, { useRef } from "react";
 import cx from "classnames";
-import axios from 'axios';
+import { useDrag, useDrop } from 'react-dnd'
 import { connect } from "react-redux";
-import { toggleTodo, swapPlan } from "../redux/actions";
+import { swapPlan } from "../redux/actions";
 import Card from 'react-bootstrap/Card'; 
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
-import { API_URL } from '../constants';
-import { ItemTypes } from '../dndConstants'
-import { useDrag, useDrop } from 'react-dnd'
 
-const Todo = ({ todo, index, toggleTodo, swapPlan}) => {
+import { ItemTypes } from '../dndConstants';
+import CheckButton from './CheckButton';
+
+const Todo = ({ todo, index, swapPlan}) => {
     const ref = useRef(null);
 
     const [, drop] = useDrop({
@@ -71,41 +71,34 @@ const Todo = ({ todo, index, toggleTodo, swapPlan}) => {
                 cursor: 'move'
             }}
         >
-            <Col></Col>
-            <Col>
+            <Col xs={2}></Col>
+            <Col xs={10}>
             <li
                 className="todo-item"
-                onClick={() => {
-                    const plan_id = todo.id
-                    const data = { plan_id }
-                    axios.post(API_URL + 'planner/toggle_plan', {data}, {withCredentials: true})
-                    .then(res => {
-                        console.log(res);
-                        console.log(res.data);
-                        // dispatches actions to add todo
-                        toggleTodo(plan_id);
-                    });
-                }}
             >
-            <Card border="dark" style={{ width: '18rem' }}>
+            <Card border="dark">
                 <Card.Header>
-                <span
-                    className={cx(
-                        "todo-item__text",
-                        todo && todo.completed && "todo-item__text--completed"
-                    )}
-                >
-                    {todo.content}
-                </span>
+                <Row>
+                <Col xs={10}>
+                    <span
+                        className={cx(
+                            "todo-item__text",
+                            todo && todo.completed && "todo-item__text--completed"
+                        )}
+                    >
+                        {todo.content}
+                    </span>
+                </Col>
+                <Col xs={2}><CheckButton todo={todo}/></Col>
+                </Row>
                 </Card.Header>
             </Card>
             </li>
-            </Col>
-        <Col> </Col>
+        </Col>
     </Row>
 )};
 
 export default connect(
     null,
-    { toggleTodo, swapPlan }
+    { swapPlan }
 )(Todo);

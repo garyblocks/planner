@@ -42,6 +42,8 @@ class Planner extends React.Component {
     }
 
     componentDidUpdate() {
+        console.log(API_URL);
+        console.log(process.env);
         if (this.props.login) {
             axios.post(API_URL + 'planner/get_plans', {}, {withCredentials: true})
             .then(res => {
