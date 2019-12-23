@@ -6,33 +6,39 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
+import { connect } from 'react-redux';
+import { addTodo, deleteAllComplete } from '../redux/actions';
 import { API_URL } from '../constants';
+import AddTag from './AddTag';
 
-const TopBar = () => {
+const TopBar = ({ addTodo, deleteAllComplete }) => {
     const [dropdownTitle, setDropdownTitle] = useState("Add Plan");
-
-    const [tagName, setTagName] = useState("");
-    const handleTagNameChange = (event) => {
-        event.persist();
-        setTagName(event.target.value);
-    }
 
     const [planName, setPlanName] = useState("");
     const handlePlanNameChange = (event) => {
-        event.persist();
         setPlanName(event.target.value);
     }
 
-    const handleAddTag = () => {
+    const [tagName, setTagName] = useState("");
+    const handleTagNameChange = (event) => {
+        setTagName(event.target.value);
+    }
+
+    const handleAddPlan = () => {
         const data = {
-            tag: tagName
+            tag: tagName,
+            plan: planName
         };
         // sets state back to empty string
-        setTagName('');
-        axios.post(API_URL + 'planner/create_tag', {data}, {withCredentials: true})
+        axios.post(API_URL + 'planner/create_plan', {data}, {withCredentials: true})
         .then(res => {
             console.log(res);
             console.log(res.data);
+            // dispatches actions to add todo
+            addTodo(
+                res.data,
+                tagName + ' - ' + planName
+            );
         });
     };
 
@@ -45,6 +51,16 @@ const TopBar = () => {
             setTags(res.data);
         });
     }, [])
+
+    const handleRemoveComplete = () => {
+        axios.post(API_URL + 'planner/delete_complete', {}, {withCredentials: true})
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+            // dispatches actions to add todo
+            deleteAllComplete();
+        });
+    };
 
     const renderTags = () => {
         const options = tags.map( item => {
@@ -62,21 +78,15 @@ const TopBar = () => {
             case "Add Plan":
                 return (
                     <Form inline>
-                        <Form.Control as="select" placeholder="Tag">
+                        <Form.Control as="select" placeholder="Tag" onChange={handleTagNameChange} value={tagName}>
                             {renderTags()}
                         </Form.Control>
                         <FormControl type="text" placeholder="Plan Name" className="mr-sm-2" onChange={handlePlanNameChange} value={planName}/>
-                        <Button variant="outline-success" onClick={handleAddTag}>Add</Button>
+                        <Button variant="outline-success" onClick={() => handleAddPlan()}>Add</Button>
                     </Form>
-
                 );
             default:
-                return (
-                    <Form inline>
-                        <FormControl type="text" placeholder="Tag Name" className="mr-sm-2" onChange={handleTagNameChange} value={tagName}/>
-                        <Button variant="outline-success" onClick={handleAddTag}>Add</Button>
-                    </Form>
-                );
+                return <AddTag />;
         }
     }
 
@@ -93,7 +103,7 @@ const TopBar = () => {
                         <NavDropdown.Item href="#action/3.2" onClick={() => setDropdownTitle("Add Plan")}>Add Plan</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                        <NavDropdown.Item href="#action/3.4" onClick={() => handleRemoveComplete()}>Delete All Complete</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
                 {renderForm()}
@@ -102,4 +112,7 @@ const TopBar = () => {
     );
 }
 
-export default TopBar;
+export default connect(
+    null,
+    { addTodo, deleteAllComplete }
+)(TopBar);

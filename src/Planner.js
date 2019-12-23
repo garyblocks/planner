@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
-import AddTodo from "./components/AddTodo";
 import TopBar from "./components/TopBar";
 import TodoList from "./components/TodoList";
 import Login from "./components/Login";
@@ -30,7 +29,6 @@ class Planner extends React.Component {
                 <Row><Col className="center">
                     <TopBar />
                 </Col></Row>
-                <Row><AddTodo /></Row>
                 <Row>
                     <Col>
                         <Row><TodoList /></Row>
