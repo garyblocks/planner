@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import cx from "classnames";
 import { useDrag, useDrop } from 'react-dnd'
 import { connect } from "react-redux";
@@ -7,6 +7,7 @@ import { getPlanById } from '../redux/selectors';
 import Card from 'react-bootstrap/Card'; 
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
+import Collapse from 'react-bootstrap/Collapse'; 
 
 import { ItemTypes } from '../dndConstants';
 import CheckButton from './CheckButton';
@@ -62,13 +63,15 @@ const Plan = ({ view, index, plan_id, plan, viewSwapId }) => {
     })
 
     const [{isDragging}, drag] = useDrag({
-        item: { type: ItemTypes.PLAN, index },
+        item: { type: ItemTypes.PLAN, index, view },
         collect: monitor => ({
             isDragging: !!monitor.isDragging(),
         }),
     })
 
     drag(drop(ref));
+
+    const [open, setOpen] = useState(false);
 
     return (
         <Row 
@@ -84,7 +87,11 @@ const Plan = ({ view, index, plan_id, plan, viewSwapId }) => {
                 className="todo-item"
             >
             <Card border="dark">
-                <Card.Header>
+                <Card.Header
+                    onClick={() => setOpen(!open)}
+                    aria-controls={ "plan_" + plan_id }
+                    aria-expanded={open}
+                >
                 <Row>
                 <Col xs={10}>
                     <span
@@ -99,6 +106,13 @@ const Plan = ({ view, index, plan_id, plan, viewSwapId }) => {
                 <Col xs={2}><CheckButton todo={plan}/></Col>
                 </Row>
                 </Card.Header>
+                <Collapse in={open}>
+                    <Card.Body id={ "plan_" + plan_id }>
+                        <Card.Text>
+                            {plan.content}
+                        </Card.Text>
+                    </Card.Body>
+                </Collapse>
             </Card>
             </li>
             </Col>
