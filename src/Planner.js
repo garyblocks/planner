@@ -7,14 +7,14 @@ import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import TopBar from "./components/TopBar";
-import TodoList from "./components/TodoList";
+import BackList from "./components/BackList";
+import FrontList from "./components/FrontList";
 import Login from "./components/Login";
-import VisibilityFilters from "./components/VisibilityFilters";
 import "./styles.css";
 import { connect } from "react-redux";
 import { getLogin } from "./redux/selectors";
 import { API_URL } from './constants';
-import { addTodo, toggleTodo } from './redux/actions';
+import { addTodo, toggleTodo, viewAddId } from './redux/actions';
 
 const mapStateToProps = state => {
     const login = getLogin(state);
@@ -31,10 +31,11 @@ class Planner extends React.Component {
                 </Col></Row>
                 <Row>
                     <Col>
-                        <Row><TodoList /></Row>
-                        <Row><VisibilityFilters /></Row>
+                        <Row><BackList /></Row>
                     </Col>
-                    <Col></Col>
+                    <Col>
+                        <Row><FrontList /></Row>
+                    </Col>
                 </Row>
             </DndProvider>
         )
@@ -55,6 +56,7 @@ class Planner extends React.Component {
                         item.id,
                         item.tag + ' - ' + item.data
                     );
+                    this.props.viewAddId(item.id, "back");
                     if (item.done) {
                         this.props.toggleTodo(item.id);
                     }
@@ -72,4 +74,7 @@ class Planner extends React.Component {
     };
 }
 
-export default connect(mapStateToProps, { addTodo, toggleTodo })(Planner);
+export default connect(
+    mapStateToProps,
+    { addTodo, toggleTodo, viewAddId }
+)(Planner);

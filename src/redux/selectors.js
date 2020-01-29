@@ -25,3 +25,7 @@ export const getTodosByVisibilityFilter = (store, visibilityFilter) => {
 }
 
 export const getLogin = store => getTodoState(store).login;
+
+
+export const getPlanById = (store, id) =>
+    getTodoState(store) ? { ...getTodoState(store).byIds[id], id } : {};

@@ -4,10 +4,10 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import { addTodo } from '../redux/actions';
+import { addTodo, viewAddId } from '../redux/actions';
 import { API_URL } from '../constants';
 
-const AddPlan = ({ addTodo }) => {
+const AddPlan = ({ addTodo, viewAddId }) => {
     // set name of the plan
     const [planName, setPlanName] = useState("");
     const handlePlanNameChange = (event) => {
@@ -46,6 +46,7 @@ const AddPlan = ({ addTodo }) => {
                 res.data,
                 tagName + ' - ' + planName
             );
+            viewAddId(res.data, "back");
         });
     };
 
@@ -73,5 +74,5 @@ const AddPlan = ({ addTodo }) => {
 
 export default connect(
     null,
-    { addTodo }
+    { addTodo, viewAddId }
 )(AddPlan);
