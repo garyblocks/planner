@@ -14,7 +14,7 @@ import "./styles.css";
 import { connect } from "react-redux";
 import { getLogin } from "./redux/selectors";
 import { API_URL } from './constants';
-import { addTodo, toggleTodo, viewAddId } from './redux/actions';
+import { addPlan, togglePlan } from './redux/actions';
 
 const mapStateToProps = state => {
     const login = getLogin(state);
@@ -52,13 +52,12 @@ class Planner extends React.Component {
                 const saved_todos = res.data;
                 saved_todos.forEach(function(item) {
 
-                    this.props.addTodo(
+                    this.props.addPlan(
                         item.id,
                         item.tag + ' - ' + item.data
                     );
-                    this.props.viewAddId(item.id, "back");
                     if (item.done) {
-                        this.props.toggleTodo(item.id);
+                        this.props.togglePlan(item.id);
                     }
                 }.bind(this));
             })
@@ -76,5 +75,5 @@ class Planner extends React.Component {
 
 export default connect(
     mapStateToProps,
-    { addTodo, toggleTodo, viewAddId }
+    { addPlan, togglePlan }
 )(Planner);

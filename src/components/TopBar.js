@@ -17,7 +17,6 @@ const TopBar = ({ deleteAllComplete }) => {
         .then(res => {
             console.log(res);
             console.log(res.data);
-            // dispatches actions to add todo
             deleteAllComplete();
         });
     };

@@ -1,12 +1,12 @@
 import { VISIBILITY_FILTERS } from "../constants";
 
-export const getTodoState = store => store.todos;
+export const getPlanState = store => store.plans;
 
 export const getTodoList = store =>
-    getTodoState(store) ? getTodoState(store).allIds : [];
+    getPlanState(store) ? getPlanState(store).allIds : [];
 
 export const getTodoById = (store, id) =>
-    getTodoState(store) ? { ...getTodoState(store).byIds[id], id } : {};
+    getPlanState(store) ? { ...getPlanState(store).byIds[id], id } : {};
 
 export const getTodos = store =>
      getTodoList(store).map(id => getTodoById(store, id));
@@ -24,8 +24,21 @@ export const getTodosByVisibilityFilter = (store, visibilityFilter) => {
     }
 }
 
-export const getLogin = store => getTodoState(store).login;
+export const getLogin = store => getPlanState(store).login;
 
 
 export const getPlanById = (store, id) =>
-    getTodoState(store) ? { ...getTodoState(store).byIds[id], id } : {};
+    getPlanState(store) ? { ...getPlanState(store).byIds[id], id } : {};
+
+
+export const getPlans = store =>
+     getTodoList(store).map(id => getTodoById(store, id));
+
+export const getPlansByView = (store, view) => {
+    const allPlans = getPlans(store);
+    var viewPlans = allPlans.filter(plan => plan.view === view);
+    viewPlans.sort(function(a, b){
+        return a.index - b.index;
+    });
+    return viewPlans
+}

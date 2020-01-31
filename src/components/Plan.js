@@ -2,36 +2,33 @@ import React, { useState, useRef } from "react";
 import cx from "classnames";
 import { useDrag, useDrop } from 'react-dnd'
 import { connect } from "react-redux";
-import { viewSwapId } from "../redux/actions";
-import { getPlanById } from '../redux/selectors';
+import { swapPlan } from "../redux/actions";
 import Card from 'react-bootstrap/Card'; 
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
 import Collapse from 'react-bootstrap/Collapse'; 
-
 import { ItemTypes } from '../dndConstants';
 import CheckButton from './CheckButton';
 
-const mapStateToProps = (state, ownProps) => {
-    const { plan_id } = ownProps;
-    const plan = getPlanById(state, plan_id);
-    return { plan };
-}
-
-const Plan = ({ view, index, plan_id, plan, viewSwapId }) => {
+const Plan = ({ plan, swapPlan }) => {
     const ref = useRef(null);
 
     const [, drop] = useDrop({
         accept: ItemTypes.PLAN,
         hover(item, monitor) {
             if (!ref.current) {
-                return
+                return;
             }
-            const dragIndex = item.index
-            const hoverIndex = index
+            if (item.view !== plan.view) {
+                return;
+            }
+            const dragId = item.id;
+            const hoverId = plan.id;
+            const dragIndex = item.index;
+            const hoverIndex = plan.index;
             // Don't replace items with themselves
             if (dragIndex === hoverIndex) {
-                return
+                return;
             }
             // Determine rectangle on screen
             const hoverBoundingRect = ref.current.getBoundingClientRect()
@@ -53,7 +50,12 @@ const Plan = ({ view, index, plan_id, plan, viewSwapId }) => {
                 return
             }
             // Time to actually perform the action
-            viewSwapId(dragIndex, hoverIndex, view)
+            swapPlan(
+                dragId,
+                hoverId,
+                dragIndex,
+                hoverIndex
+            );
             // Note: we're mutating the monitor item here!
             // Generally it's better to avoid mutations,
             // but it's good here for the sake of performance
@@ -63,7 +65,12 @@ const Plan = ({ view, index, plan_id, plan, viewSwapId }) => {
     })
 
     const [{isDragging}, drag] = useDrag({
-        item: { type: ItemTypes.PLAN, index, view },
+        item: {
+            type: ItemTypes.PLAN,
+            index: plan.index,
+            view: plan.view,
+            id: plan.id
+        },
         collect: monitor => ({
             isDragging: !!monitor.isDragging(),
         }),
@@ -89,7 +96,7 @@ const Plan = ({ view, index, plan_id, plan, viewSwapId }) => {
             <Card border="dark">
                 <Card.Header
                     onClick={() => setOpen(!open)}
-                    aria-controls={ "plan_" + plan_id }
+                    aria-controls={ "plan_" + plan.id }
                     aria-expanded={open}
                 >
                 <Row>
@@ -103,11 +110,11 @@ const Plan = ({ view, index, plan_id, plan, viewSwapId }) => {
                         {plan.content}
                     </span>
                 </Col>
-                <Col xs={2}><CheckButton todo={plan}/></Col>
+                <Col xs={2}><CheckButton plan={plan}/></Col>
                 </Row>
                 </Card.Header>
                 <Collapse in={open}>
-                    <Card.Body id={ "plan_" + plan_id }>
+                    <Card.Body id={ "plan_" + plan.id }>
                         <Card.Text>
                             {plan.content}
                         </Card.Text>
@@ -122,6 +129,6 @@ const Plan = ({ view, index, plan_id, plan, viewSwapId }) => {
 };
 
 export default connect(
-    mapStateToProps,
-    { viewSwapId }
+    null,
+    { swapPlan }
 )(Plan);

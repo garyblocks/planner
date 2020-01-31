@@ -3,30 +3,30 @@ import { useDrop } from 'react-dnd'
 import Col from 'react-bootstrap/Col'; 
 import Plan from "./Plan";
 import { connect } from "react-redux";
-import { viewMoveId } from "../redux/actions";
+import { changeView } from "../redux/actions";
 import { ItemTypes } from '../dndConstants';
+import { getPlansByView } from '../redux/selectors';
+
+const current_view = 'front';
 
 const mapStateToProps = state => {
-    const { views } = state;
-    return { views };
+    const plans = getPlansByView(state, current_view);
+    return { plans }
 }
 
-const FrontList = ({ views, viewMoveId }) => {
-    const front = views.front;
-    const current_view = 'front';
+const FrontList = ({ plans, changeView }) => {
 
     const [, drop] = useDrop({
         accept: ItemTypes.PLAN,
         drop: (item, monitor) => {
-            const dragIndex = item.index;
-            const from = item.view
-            const id = views[from][dragIndex];
+            const from = item.view;
+            const id = item.id;
             if (from === current_view) {
                 return
             }
             // Time to actually perform the action
-            viewMoveId(id, from, current_view);
-            item.index = front.length - 1;
+            changeView(id, current_view);
+            item.index = plans.length;
         },
     })
 
@@ -34,9 +34,9 @@ const FrontList = ({ views, viewMoveId }) => {
         <Col className="center" ref={drop}>
             <ul className="plan-list">
                 <h2>FrontLine</h2>
-                {front && front.length
-                ? front.map((plan_id, index) => {
-                    return <Plan key={`todo-${plan_id}`} view="front" index={index} plan_id={plan_id}/>;
+                {plans && plans.length
+                ? plans.map((plan, idx) => {
+                    return <Plan key={`todo-${plan.id}-${plan.index}`} plan={plan} />;
                 })
                 : "No todos, yay!"}
             </ul>
@@ -44,4 +44,7 @@ const FrontList = ({ views, viewMoveId }) => {
     );
 }
 
-export default connect(mapStateToProps, {viewMoveId})(FrontList)
+export default connect(
+    mapStateToProps,
+    { changeView }
+)(FrontList)
