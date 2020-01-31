@@ -5,16 +5,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import { connect } from "react-redux";
 
 import TopBar from "./components/TopBar";
 import BackList from "./components/BackList";
 import FrontList from "./components/FrontList";
 import Login from "./components/Login";
 import "./styles.css";
-import { connect } from "react-redux";
-import { getLogin } from "./redux/selectors";
 import { API_URL } from './constants';
 import { addPlan, togglePlan } from './redux/actions';
+import { getLogin } from "./redux/selectors";
 
 const mapStateToProps = state => {
     const login = getLogin(state);
@@ -66,7 +66,7 @@ class Planner extends React.Component {
 
     render() {
         return (
-            <Container className="todo-app">
+            <Container className="planner-app">
                 {this.props.login ? this.renderPlannerContent() : <Login />}
             </Container>
         )

@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-.todo-app {
+.planner-app {
   font-family: sans-serif;
 }
 
@@ -50,4 +50,9 @@
 }
 .filter--active {
   border-bottom: 1px solid black;
+}
+
+/** top bar **/
+#topbar-addplan-select-tag {
+    margin: 0 2px;
 }

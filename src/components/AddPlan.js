@@ -4,10 +4,10 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import { addPlan, viewAddId } from '../redux/actions';
+import { addPlan } from '../redux/actions';
 import { API_URL } from '../constants';
 
-const AddPlan = ({ addPlan, viewAddId }) => {
+const AddPlan = ({ addPlan }) => {
     // set name of the plan
     const [planName, setPlanName] = useState("");
     const handlePlanNameChange = (event) => {
@@ -28,6 +28,7 @@ const AddPlan = ({ addPlan, viewAddId }) => {
             console.log(res);
             console.log(res.data);
             setTags(res.data);
+            setTagName(res.data ? res.data[0].tag : "");
         });
     }, [])
 
@@ -46,7 +47,7 @@ const AddPlan = ({ addPlan, viewAddId }) => {
                 res.data,
                 tagName + ' - ' + planName
             );
-            viewAddId(res.data, "back");
+            setPlanName("");
         });
     };
 
@@ -63,7 +64,7 @@ const AddPlan = ({ addPlan, viewAddId }) => {
 
     return (
         <Form inline>
-            <Form.Control as="select" placeholder="Tag" onChange={handleTagNameChange} value={tagName}>
+            <Form.Control as="select" placeholder="Tag" onChange={handleTagNameChange} value={tagName} id="topbar-addplan-select-tag">
                 {renderTags()}
             </Form.Control>
             <FormControl type="text" placeholder="Plan Name" className="mr-sm-2" onChange={handlePlanNameChange} value={planName}/>
@@ -74,5 +75,5 @@ const AddPlan = ({ addPlan, viewAddId }) => {
 
 export default connect(
     null,
-    { addPlan, viewAddId }
+    { addPlan }
 )(AddPlan);

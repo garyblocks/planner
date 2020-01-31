@@ -36,8 +36,8 @@ const TopBar = ({ deleteAllComplete }) => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Nav.Link href="#link">Link</Nav.Link>
+                    <Nav.Link href="#exercise">Exercise</Nav.Link>
+                    <Nav.Link href="#event">Event</Nav.Link>
                     <NavDropdown title={dropdownTitle} id="basic-nav-dropdown">
                         <NavDropdown.Item href="#action/3.1" onClick={() => setDropdownTitle("Add Tag")}>Add Tag</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.2" onClick={() => setDropdownTitle("Add Plan")}>Add Plan</NavDropdown.Item>
