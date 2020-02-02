@@ -113,12 +113,14 @@ const Plan = ({ plan, swapPlan }) => {
                 <Col xs={2}><CheckButton plan={plan}/></Col>
                 </Row>
                 </Card.Header>
-                <Collapse in={open}>
-                    <Card.Body id={ "plan_" + plan.id }>
+                <Collapse in={open} id={ "plan_" + plan.id }>
+                    <div>
+                    <Card.Body>
                         <Card.Text>
                             {plan.content}
                         </Card.Text>
                     </Card.Body>
+                    </div>
                 </Collapse>
             </Card>
             </li>
