@@ -19,6 +19,7 @@ const Plan = ({ plan, swapPlan }) => {
             if (!ref.current) {
                 return;
             }
+            // don't swap if items are from different view
             if (item.view !== plan.view) {
                 return;
             }

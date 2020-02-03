@@ -7,7 +7,8 @@ import { API_URL } from '../constants';
 const CheckButton = ({ plan, togglePlan }) => {
     return (
         <i 
-            onClick={() => {
+            onClick={(event) => {
+                event.stopPropagation();
                 const plan_id = plan.id
                 const data = { plan_id }
                 axios.post(API_URL + 'planner/toggle_plan', {data}, {withCredentials: true})
