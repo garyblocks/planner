@@ -86,7 +86,8 @@ const Plan = ({ plan, swapPlan }) => {
             ref={ref}
             style={{
                 opacity: isDragging ? 0 : 1,
-                cursor: 'move'
+                cursor: 'move',
+                margin: '0 1px'
             }}
         >
             <Col xs={1}></Col>
