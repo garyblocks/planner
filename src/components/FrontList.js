@@ -26,7 +26,6 @@ const FrontList = ({ plans, changeView }) => {
             }
             // Time to actually perform the action
             changeView(id, current_view);
-            item.index = plans.length;
         },
     })
 
