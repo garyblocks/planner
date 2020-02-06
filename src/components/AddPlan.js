@@ -45,7 +45,8 @@ const AddPlan = ({ addPlan }) => {
             // dispatches actions to add plan
             addPlan(
                 res.data,
-                tagName + ' - ' + planName
+                tagName + ' - ' + planName,
+                planName
             );
             setPlanName("");
         });

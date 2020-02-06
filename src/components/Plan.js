@@ -109,7 +109,7 @@ const Plan = ({ plan, swapPlan }) => {
                             plan && plan.completed && "todo-item__text--completed"
                         )}
                     >
-                        {plan.content}
+                        {plan.header}
                     </span>
                 </Col>
                 <Col xs={2}><CheckButton plan={plan}/></Col>

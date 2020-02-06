@@ -3,9 +3,9 @@ import {
     CHANGE_VIEW
 } from "./actionTypes";
 
-export const addPlan = (id, content) => ({
+export const addPlan = (id, header, content) => ({
     type: ADD_PLAN,
-    payload: { id, content }
+    payload: { id, header, content }
 });
 
 export const togglePlan = id => ({

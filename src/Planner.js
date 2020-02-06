@@ -54,7 +54,8 @@ class Planner extends React.Component {
 
                     this.props.addPlan(
                         item.id,
-                        item.tag + ' - ' + item.data
+                        item.tag + ' - ' + item.title,
+                        item.data
                     );
                     if (item.done) {
                         this.props.togglePlan(item.id);

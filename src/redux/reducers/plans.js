@@ -12,14 +12,15 @@ export default function(state = initialState, action) {
     switch (action.type) {
 
         case ADD_PLAN: {
-            const { id, content } = action.payload;
+            const { id, header, content } = action.payload;
             return {
                 ...state,
                 allIds: [...state.allIds, id],
                 byIds: {
                     ...state.byIds,
                     [id]: {
-                        content,
+                        header: header,
+                        content: content,
                         completed: false,
                         view: 'back',
                         index: state.allIds.length
