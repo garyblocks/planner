@@ -1,5 +1,6 @@
 import {
-    ADD_PLAN, TOGGLE_PLAN, LOGIN, DELETE_ALL_COMPLETE, SWAP_PLAN, CHANGE_VIEW
+    ADD_PLAN, TOGGLE_PLAN, LOGIN, DELETE_ALL_COMPLETE,
+    SWAP_PLAN, CHANGE_VIEW, CHANGE_DATA
 } from "../actionTypes";
 
 const initialState = {
@@ -84,6 +85,20 @@ export default function(state = initialState, action) {
                     [id2]: {
                         ...state.byIds[id2],
                         index: index1
+                    }
+                }
+            };
+        }
+
+        case CHANGE_DATA: {
+            const { id, data } = action.payload;
+            return {
+                ...state,
+                byIds: {
+                    ...state.byIds,
+                    [id]: {
+                        ...state.byIds[id],
+                        content: data
                     }
                 }
             };

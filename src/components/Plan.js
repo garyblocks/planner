@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col';
 import Collapse from 'react-bootstrap/Collapse'; 
 import { ItemTypes } from '../dndConstants';
 import CheckButton from './CheckButton';
+import PlanBody from './PlanBody';
 
 const Plan = ({ plan, swapPlan }) => {
     const ref = useRef(null);
@@ -117,11 +118,7 @@ const Plan = ({ plan, swapPlan }) => {
                 </Card.Header>
                 <Collapse in={open} id={ "plan_" + plan.id }>
                     <div>
-                    <Card.Body>
-                        <Card.Text>
-                            {plan.content}
-                        </Card.Text>
-                    </Card.Body>
+                        <PlanBody plan={plan}/>
                     </div>
                 </Collapse>
             </Card>

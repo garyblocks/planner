@@ -5,3 +5,4 @@ export const LOGIN = "LOGIN";
 export const DELETE_ALL_COMPLETE = "DELETE_ALL_COMPLETE";
 export const SWAP_PLAN = "SWAP_PLAN";
 export const CHANGE_VIEW = "CHANGE_VIEW";
+export const CHANGE_DATA = "CHANGE_DATA";
