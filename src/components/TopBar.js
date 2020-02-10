@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import { deleteAllComplete } from '../redux/actions';
 import { API_URL } from '../constants';
 import AddTag from './AddTag';
@@ -32,12 +32,18 @@ const TopBar = ({ deleteAllComplete }) => {
 
     return (
         <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="#home">Planner</Navbar.Brand>
+            <Link to='/home'>
+                <Navbar.Brand>Planner</Navbar.Brand>
+            </Link>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link href="#exercise">Exercise</Nav.Link>
-                    <Nav.Link href="#event">Event</Nav.Link>
+                    <Link to='/exercise' className="nav-link">
+                        Exercise
+                    </Link>
+                    <Link to='/exercise'>
+                        <Nav.Item className="nav-link">Event</Nav.Item>
+                    </Link>
                     <NavDropdown title={dropdownTitle} id="basic-nav-dropdown">
                         <NavDropdown.Item href="#action/3.1" onClick={() => setDropdownTitle("Add Tag")}>Add Tag</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.2" onClick={() => setDropdownTitle("Add Plan")}>Add Plan</NavDropdown.Item>
