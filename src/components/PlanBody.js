@@ -52,6 +52,10 @@ const PlanBody = ({ plan, changeData }) => {
                     inputRef={inputRef}
                     value={planContent}
                     onChange={handlePlanContentChange}
+                    draggable="true"
+                    onDragStart={e => {
+                        e.preventDefault();
+                    }} 
                     className='plan-content-textarea'
                 /> : <Card.Text onClick={() => setEditable(true)}>
                     {planContent}
