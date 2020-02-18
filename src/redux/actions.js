@@ -1,6 +1,6 @@
 import { 
     ADD_PLAN, TOGGLE_PLAN, SET_FILTER, LOGIN, DELETE_ALL_COMPLETE, SWAP_PLAN,
-    CHANGE_VIEW, CHANGE_DATA
+    CHANGE_VIEW, CHANGE_DATA, ADD_EXERCISE
 } from "./actionTypes";
 
 export const addPlan = (id, header, content) => ({
@@ -32,4 +32,9 @@ export const changeView = (id, view) => ({
 export const changeData = (id, data) => ({
     type: CHANGE_DATA,
     payload: { id, data }
+});
+
+export const addExercise = (id, tag, name, unit, freq, active) => ({
+    type: ADD_EXERCISE,
+    payload: { id, tag, name, unit, freq, active }
 });

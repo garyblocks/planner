@@ -2,14 +2,14 @@ import React from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import TopBar from "./TopBar";
+import ExerciseBar from "./ExerciseBar";
 
 
 const Exercise = () => {
     return (
         <>
         <Row><Col className="center">
-            <TopBar />
+            <ExerciseBar />
         </Col></Row>
         </>
     )

@@ -15,7 +15,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Exercise from "./components/Exercise";
 import { API_URL } from './constants';
-import { addPlan, togglePlan } from './redux/actions';
+import { addPlan, togglePlan, addExercise } from './redux/actions';
 import { getLogin } from "./redux/selectors";
 
 const mapStateToProps = state => {
@@ -49,6 +49,7 @@ class Planner extends React.Component {
         console.log(API_URL);
         console.log(process.env);
         if (this.props.login) {
+            // download plans
             axios.post(API_URL + 'planner/get_plans', {}, {withCredentials: true})
             .then(res => {
                 console.log(res);
@@ -66,6 +67,25 @@ class Planner extends React.Component {
                     }
                 }.bind(this));
             })
+
+            // download exercises
+            axios.post(API_URL + 'planner/exercises', {}, {withCredentials: true})
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                const saved_todos = res.data;
+                saved_todos.forEach(function(item) {
+
+                    this.props.addExercise(
+                        item.id,
+                        item.tag,
+                        item.title,
+                        item.unit,
+                        item.frequency,
+                        item.active
+                    );
+                }.bind(this));
+            })
         }
     }
 
@@ -80,5 +100,5 @@ class Planner extends React.Component {
 
 export default connect(
     mapStateToProps,
-    { addPlan, togglePlan }
+    { addPlan, togglePlan, addExercise }
 )(Planner);
