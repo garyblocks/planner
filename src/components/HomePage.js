@@ -3,11 +3,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import TopBar from "./TopBar";
-import BackList from "./BackList";
-import FrontList from "./FrontList";
+import PlanList from "./PlanList";
 
 
-const Home = () => {
+const HomePage = () => {
     return (
         <>
         <Row><Col className="center">
@@ -15,14 +14,14 @@ const Home = () => {
         </Col></Row>
         <Row>
             <Col>
-                <Row><BackList /></Row>
+                <Row><PlanList currentView="back"/></Row>
             </Col>
             <Col>
-                <Row><FrontList /></Row>
+                <Row><PlanList currentView="front"/></Row>
             </Col>
         </Row>
         </>
     )
 }
 
-export default Home;
+export default HomePage;

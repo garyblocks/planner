@@ -1,4 +1,4 @@
-import { ADD_EXERCISE } from "../actionTypes";
+import { ADD_EXERCISE, SWAP_EXERCISE } from "../actionTypes";
 
 const initialState = {
     allIds: [],
@@ -20,7 +20,26 @@ export default function(state = initialState, action) {
                         name: name,
                         unit: unit,
                         freq: freq,
-                        active: active
+                        active: active,
+                        index: state.allIds.length
+                    }
+                }
+            };
+        }
+
+        case SWAP_EXERCISE: {
+            const { id1, id2, index1, index2 } = action.payload;
+            return {
+                ...state,
+                byIds: {
+                    ...state.byIds,
+                    [id1]: {
+                        ...state.byIds[id1],
+                        index: index2
+                    },
+                    [id2]: {
+                        ...state.byIds[id2],
+                        index: index1
                     }
                 }
             };

@@ -30,16 +30,28 @@
     text-align: center;
 }
 
-/** todo item **/
-.todo-item {
-  font-family: monospace;
-  cursor: pointer;
-  line-height: 1.5;
-  margin: 2px;
+/** plan item **/
+.plan {
+    cursor: move;
+    text-align: left;
+    font-family: monospace;
 }
-.todo-item__text--completed {
-  text-decoration: line-through;
-  color: lightgray;
+.plan-card {
+    margin: 2px;
+}
+.plan-header-tag {
+    font-size: 13px;
+    padding: 5px;
+    margin: -1px 6px 2px 2px;
+}
+.plan-header-text {
+    cursor: pointer;
+    line-height: 1.5;
+    margin: 2px;
+}
+.plan-header-text--completed {
+    text-decoration: line-through;
+    color: lightgray;
 }
 
 /** visibility filters **/
@@ -54,7 +66,7 @@
 
 /** top bar **/
 #topbar-addplan-select-tag {
-    margin: 0 2px;
+    margin: 0 6px;
 }
 
 /** plan **/
@@ -62,4 +74,13 @@
     width: 100%;
     height: 100%;
     resize: none;
+}
+
+/** exercise **/
+.exercise-text {
+    font-size: 18px;
+    margin: 4px;
+}
+.exercise-button {
+    margin: 3px;
 }

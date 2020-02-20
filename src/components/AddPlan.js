@@ -45,7 +45,8 @@ const AddPlan = ({ addPlan }) => {
             // dispatches actions to add plan
             addPlan(
                 res.data,
-                tagName + ' - ' + planName,
+                tagName,
+                planName,
                 planName
             );
             setPlanName("");
@@ -55,7 +56,7 @@ const AddPlan = ({ addPlan }) => {
     const renderTags = () => {
         const options = tags.map( item => {
             return (
-                <option>
+                <option key={item.tag}>
                     {item.tag}
                 </option>
             );

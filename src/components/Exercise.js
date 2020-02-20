@@ -1,18 +1,130 @@
-import React from "react";
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import React, { useRef } from "react";
+import { useDrag, useDrop } from 'react-dnd'
+import { connect } from "react-redux";
+import { swapExercise } from "../redux/actions";
+import Card from 'react-bootstrap/Card'; 
+import Row from 'react-bootstrap/Row'; 
+import Col from 'react-bootstrap/Col'; 
+import Button from 'react-bootstrap/Button'; 
+import { ItemTypes } from '../dndConstants';
 
-import ExerciseBar from "./ExerciseBar";
+const Exercise = ({ exercise, swapExercise }) => {
+    const ref = useRef(null);
 
+    const [, drop] = useDrop({
+        accept: ItemTypes.EXERCISE,
+        hover(item, monitor) {
+            if (!ref.current) {
+                return;
+            }
+            const dragId = item.id;
+            const hoverId = exercise.id;
+            const dragIndex = item.index;
+            const hoverIndex = exercise.index;
+            // Don't replace items with themselves
+            if (dragIndex === hoverIndex) {
+                return;
+            }
+            // Determine rectangle on screen
+            const hoverBoundingRect = ref.current.getBoundingClientRect()
+            // Get vertical middle
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+            // Determine mouse position
+            const clientOffset = monitor.getClientOffset()
+            // Get pixels to the top
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+            // Only perform the move when the mouse has crossed half of the items height
+            // When dragging downwards, only move when the cursor is below 50%
+            // When dragging upwards, only move when the cursor is above 50%
+            // Dragging downwards
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return
+            }
+            // Dragging upwards
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return
+            }
+            // Time to actually perform the action
+            swapExercise(
+                dragId,
+                hoverId,
+                dragIndex,
+                hoverIndex
+            );
+            // Note: we're mutating the monitor item here!
+            // Generally it's better to avoid mutations,
+            // but it's good here for the sake of performance
+            // to avoid expensive index searches.
+            item.index = hoverIndex
+        },
+    })
 
-const Exercise = () => {
+    const [{isDragging}, drag] = useDrag({
+        item: {
+            type: ItemTypes.EXERCISE,
+            index: exercise.index,
+            id: exercise.id
+        },
+        collect: monitor => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    })
+
+    drag(drop(ref));
+
     return (
-        <>
-        <Row><Col className="center">
-            <ExerciseBar />
-        </Col></Row>
-        </>
+        <Row 
+            ref={ref}
+            style={{
+                opacity: isDragging ? 0 : 1,
+                cursor: 'move',
+                margin: '0 1px'
+            }}
+        >
+            <Col xs={1}></Col>
+            <Col xs={10}>
+            <li
+                className="todo-item"
+            >
+            <Card border="dark">
+                <Card.Header>
+                <Row>
+                    <Button variant="info" className="exercise-button">
+                        <span className="exercise-text">
+                            Tag: {exercise.tag}
+                        </span>
+                    </Button>
+                    <Button variant="info" className="exercise-button">
+                        <span className="exercise-text">
+                            Name: {exercise.name}
+                        </span>
+                    </Button>
+                    <Button variant="info" className="exercise-button">
+                        <span className="exercise-text">
+                            Unit: {exercise.unit}
+                        </span>
+                    </Button>
+                    <Button variant="info" className="exercise-button">
+                        <span className="exercise-text">
+                            Freqency: {exercise.freq}
+                        </span>
+                    </Button>
+                    <Button variant="danger" className="exercise-button">
+                        <span className="exercise-text">
+                            {exercise.active?"Active": "Not Active"}
+                        </span>
+                    </Button>
+                </Row>
+                </Card.Header>
+            </Card>
+            </li>
+            </Col>
+            <Col xs={1}></Col>
+        </Row>
     )
-}
+};
 
-export default Exercise;
+export default connect(
+    null,
+    { swapExercise }
+)(Exercise);

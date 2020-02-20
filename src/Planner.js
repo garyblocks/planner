@@ -12,8 +12,8 @@ import {
 
 import "./styles.css";
 import Login from "./components/Login";
-import Home from "./components/Home";
-import Exercise from "./components/Exercise";
+import HomePage from "./components/HomePage";
+import ExercisePage from "./components/ExercisePage";
 import { API_URL } from './constants';
 import { addPlan, togglePlan, addExercise } from './redux/actions';
 import { getLogin } from "./redux/selectors";
@@ -31,13 +31,13 @@ class Planner extends React.Component {
                 <Router>
                     <Switch>
                         <Route path="/home">
-                            <Home />
+                            <HomePage />
                         </Route>
                         <Route path="/exercise">
-                            <Exercise />
+                            <ExercisePage />
                         </Route>
                         <Route path="/">
-                            <Home />
+                            <HomePage />
                         </Route>
                     </Switch>
                 </Router>
@@ -59,7 +59,8 @@ class Planner extends React.Component {
 
                     this.props.addPlan(
                         item.id,
-                        item.tag + ' - ' + item.title,
+                        item.tag,
+                        item.title,
                         item.data
                     );
                     if (item.done) {

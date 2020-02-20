@@ -7,3 +7,4 @@ export const SWAP_PLAN = "SWAP_PLAN";
 export const CHANGE_VIEW = "CHANGE_VIEW";
 export const CHANGE_DATA = "CHANGE_DATA";
 export const ADD_EXERCISE = "ADD_EXERCISE";
+export const SWAP_EXERCISE = "SWAP_EXERCISE";

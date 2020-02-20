@@ -5,8 +5,9 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { API_URL } from '../constants';
+import { addExercise } from '../redux/actions';
 
-const AddExercise = () => {
+const AddExercise = ({ addExercise }) => {
     // set name of the exercise
     const [exerciseName, setExerciseName] = useState("");
     const handleExerciseNameChange = (event) => {
@@ -49,12 +50,15 @@ const AddExercise = () => {
         .then(res => {
             console.log(res);
             console.log(res.data);
-            // dispatches actions to add plan
-            // addPlan(
-            //     res.data,
-            //     tagName + ' - ' + planName,
-            //     planName
-            // );
+            // dispatches actions to add exercise
+            addExercise(
+                res.data,
+                tagName,
+                exerciseName,
+                'month',
+                exerciseFreq,
+                false
+            );
             setExerciseName("");
         });
     };
@@ -62,7 +66,7 @@ const AddExercise = () => {
     const renderTags = () => {
         const options = tags.map( item => {
             return (
-                <option>
+                <option key={item.tag}>
                     {item.tag}
                 </option>
             );
@@ -82,4 +86,7 @@ const AddExercise = () => {
     )
 }
 
-export default connect()(AddExercise);
+export default connect(
+    null,
+    { addExercise }
+)(AddExercise);

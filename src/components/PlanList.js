@@ -7,37 +7,42 @@ import { useDrop } from 'react-dnd'
 import { ItemTypes } from '../dndConstants';
 import { getPlansByView } from '../redux/selectors';
 
-const current_view = 'back';
-
-const mapStateToProps = state => {
-    const plans = getPlansByView(state, current_view);
+const mapStateToProps = (state, ownProps) => {
+    const { currentView } = ownProps; 
+    const plans = getPlansByView(state, currentView);
     return { plans }
 }
 
-const BackList = ({ plans, changeView }) => {
+const PlanList = ({ currentView, plans, changeView }) => {
 
     const [, drop] = useDrop({
         accept: ItemTypes.PLAN,
         drop: (item, monitor) => {
             const from = item.view;
             const id = item.id;
-            if (from === current_view) {
+            if (from === currentView) {
                 return
             }
-            // Time to actually perform the action
-            changeView(id, current_view);
+            // drop id into a current view
+            changeView(id, currentView);
         }
     })
+
+    const renderPlans = (plans) => {
+        if (plans && plans.length) {
+             return plans.map((plan, idx) => {
+                        return <Plan key={`todo-${plan.id}`} plan={plan}/>;
+                    })
+        } else {
+            return <h3>no plans</h3>
+        }
+    }
 
     return (
         <Col className="center" ref={drop}>
             <ul className="plan-list">
-                <h2>BackLog</h2>
-                {plans && plans.length
-                ? plans.map((plan, idx) => {
-                    return <Plan key={`todo-${plan.id}`} plan={plan}/>;
-                })
-                : "No todos, yay!"}
+                <h2>{currentView}</h2>
+                { renderPlans(plans) }
             </ul>
         </Col>
     );
@@ -46,4 +51,4 @@ const BackList = ({ plans, changeView }) => {
 export default connect(
     mapStateToProps,
     { changeView }
-)(BackList)
+)(PlanList)

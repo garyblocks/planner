@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
 import Collapse from 'react-bootstrap/Collapse'; 
+import Button from 'react-bootstrap/Button'; 
 import { ItemTypes } from '../dndConstants';
 import CheckButton from './CheckButton';
 import PlanBody from './PlanBody';
@@ -90,13 +91,17 @@ const Plan = ({ plan, swapPlan }) => {
                 cursor: 'move',
                 margin: '0 1px'
             }}
+            className="plan"
         >
             <Col xs={1}></Col>
             <Col xs={10}>
             <li
                 className="todo-item"
             >
-            <Card border="dark">
+            <Card
+                border="dark"
+                className="plan-card"
+            >
                 <Card.Header
                     onClick={() => setOpen(!open)}
                     aria-controls={ "plan_" + plan.id }
@@ -104,13 +109,17 @@ const Plan = ({ plan, swapPlan }) => {
                 >
                 <Row>
                 <Col xs={10}>
+                    <Button
+                        className="plan-header-tag"
+                        variant={plan.completed ? "outline-secondary" : "outline-danger"}
+                    >{plan.tag}</Button>
                     <span
                         className={cx(
-                            "todo-item__text",
-                            plan && plan.completed && "todo-item__text--completed"
+                            "plan-header-text",
+                            plan && plan.completed && "plan-header-text--completed"
                         )}
                     >
-                        {plan.header}
+                        {plan.title}
                     </span>
                 </Col>
                 <Col xs={2}><CheckButton plan={plan}/></Col>
