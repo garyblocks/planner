@@ -1,11 +1,11 @@
 import { 
     ADD_PLAN, TOGGLE_PLAN, SET_FILTER, LOGIN, DELETE_ALL_COMPLETE, SWAP_PLAN,
-    CHANGE_VIEW, CHANGE_DATA, ADD_EXERCISE, SWAP_EXERCISE
+    CHANGE_VIEW, CHANGE_DATA, ADD_EXERCISE, SWAP_EXERCISE, ACTIVATE_EXERCISE
 } from "./actionTypes";
 
-export const addPlan = (id, tag, title, content) => ({
+export const addPlan = (id, tag, title, content, view) => ({
     type: ADD_PLAN,
-    payload: { id, tag, title, content }
+    payload: { id, tag, title, content, view }
 });
 
 export const togglePlan = id => ({
@@ -42,4 +42,9 @@ export const addExercise = (id, tag, name, unit, freq, active) => ({
 export const swapExercise = (id1, id2, index1, index2) => ({
     type: SWAP_EXERCISE,
     payload: {id1, id2, index1, index2}
+});
+
+export const activateExercise = id => ({
+    type: ACTIVATE_EXERCISE,
+    payload: { id }
 });

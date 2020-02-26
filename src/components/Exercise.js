@@ -1,14 +1,16 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from 'react-dnd'
 import { connect } from "react-redux";
-import { swapExercise } from "../redux/actions";
+import { swapExercise, addPlan, activateExercise } from "../redux/actions";
 import Card from 'react-bootstrap/Card'; 
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
 import Button from 'react-bootstrap/Button'; 
 import { ItemTypes } from '../dndConstants';
+import axios from 'axios';
+import { API_URL } from '../constants';
 
-const Exercise = ({ exercise, swapExercise }) => {
+const Exercise = ({ exercise, swapExercise, activateExercise }) => {
     const ref = useRef(null);
 
     const [, drop] = useDrop({
@@ -70,6 +72,28 @@ const Exercise = ({ exercise, swapExercise }) => {
         }),
     })
 
+    const handleActiveEx = () => {
+        const data = { id: exercise.id };
+        // sets state back to empty string
+        axios.post(API_URL + 'planner/exercise/activate', {data}, {withCredentials: true})
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+            const rows = res.data
+            // dispatches actions to add plan
+            rows.forEach(function(item) {
+                addPlan(
+                    item.id,
+                    item.tag,
+                    item.title,
+                    item.title,
+                    item.view ? item.view : 'back'
+                );
+            });
+            activateExercise(exercise.id);
+        });
+    };
+
     drag(drop(ref));
 
     return (
@@ -109,9 +133,13 @@ const Exercise = ({ exercise, swapExercise }) => {
                             Freqency: {exercise.freq}
                         </span>
                     </Button>
-                    <Button variant="danger" className="exercise-button">
+                    <Button
+                        variant= {exercise.active ? "secondary": "danger"}
+                        className="exercise-button"
+                        onClick={() => handleActiveEx()}
+                    >
                         <span className="exercise-text">
-                            {exercise.active?"Active": "Not Active"}
+                            {exercise.active ? "Activated": "Activate"}
                         </span>
                     </Button>
                 </Row>
@@ -126,5 +154,5 @@ const Exercise = ({ exercise, swapExercise }) => {
 
 export default connect(
     null,
-    { swapExercise }
+    { swapExercise, addPlan, activateExercise }
 )(Exercise);

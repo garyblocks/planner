@@ -4,8 +4,7 @@ import Container from 'react-bootstrap/Container';
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { connect } from "react-redux";
-import {
-    BrowserRouter as Router,
+import { BrowserRouter as Router,
     Switch,
     Route
 } from "react-router-dom";
@@ -61,7 +60,8 @@ class Planner extends React.Component {
                         item.id,
                         item.tag,
                         item.title,
-                        item.data
+                        item.data,
+                        item.view ? item.view : 'back'
                     );
                     if (item.done) {
                         this.props.togglePlan(item.id);
