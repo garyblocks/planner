@@ -47,7 +47,8 @@ const AddPlan = ({ addPlan }) => {
                 res.data,
                 tagName,
                 planName,
-                planName
+                planName,
+                "back"
             );
             setPlanName("");
         });
