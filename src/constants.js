@@ -6,3 +6,6 @@ export const VISIBILITY_FILTERS = {
 
 
 export const API_URL = process.env.NODE_ENV === "production" ? 'http://wangjiayu.ninja/' : 'http://localhost:7777/';
+
+
+export const BASE_URL = process.env.NODE_ENV === "production" ? 'apps/planner/' : '/';

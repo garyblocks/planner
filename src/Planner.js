@@ -13,7 +13,7 @@ import "./styles.css";
 import Login from "./components/Login";
 import HomePage from "./components/HomePage";
 import ExercisePage from "./components/ExercisePage";
-import { API_URL } from './constants';
+import { API_URL, BASE_URL } from './constants';
 import { addPlan, togglePlan, addExercise } from './redux/actions';
 import { getLogin } from "./redux/selectors";
 
@@ -27,7 +27,7 @@ class Planner extends React.Component {
     renderPlannerContent() {
         return (
             <DndProvider backend={HTML5Backend}>
-                <Router>
+                <Router basename={ BASE_URL }>
                     <Switch>
                         <Route path="/home">
                             <HomePage />

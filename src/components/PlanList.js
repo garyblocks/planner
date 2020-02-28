@@ -53,7 +53,10 @@ const PlanList = ({ currentView, plans, changeView }) => {
 
     return (
         <Col className="center" ref={drop}>
-            <ul className="plan-list">
+            <ul
+                className="plan-list" 
+                style={{'max-height': 'calc(100vh - 100px)', 'overflow-y': 'auto'}}
+            >
                 <h2>{currentView}</h2>
                 { renderPlans(plans) }
             </ul>
