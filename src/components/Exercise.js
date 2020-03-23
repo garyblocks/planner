@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from 'react-dnd'
 import { connect } from "react-redux";
-import { swapExercise, addPlan, activateExercise } from "../redux/actions";
+import { swapExercise, addPlan } from "../redux/actions";
 import Card from 'react-bootstrap/Card'; 
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
@@ -10,7 +10,7 @@ import { ItemTypes } from '../dndConstants';
 import axios from 'axios';
 import { API_URL } from '../constants';
 
-const Exercise = ({ exercise, swapExercise, activateExercise }) => {
+const Exercise = ({ exercise, swapExercise, addPlan }) => {
     const ref = useRef(null);
 
     const [, drop] = useDrop({
@@ -86,11 +86,10 @@ const Exercise = ({ exercise, swapExercise, activateExercise }) => {
                     item.id,
                     item.tag,
                     item.title,
-                    item.title,
+                    item.data,
                     item.view ? item.view : 'back'
                 );
             });
-            activateExercise(exercise.id);
         });
     };
 
@@ -134,13 +133,11 @@ const Exercise = ({ exercise, swapExercise, activateExercise }) => {
                         </span>
                     </Button>
                     <Button
-                        variant= {exercise.active ? "secondary": "danger"}
+                        variant="danger"
                         className="exercise-button"
                         onClick={() => handleActiveEx()}
                     >
-                        <span className="exercise-text">
-                            {exercise.active ? "Activated": "Activate"}
-                        </span>
+                        <span className="exercise-text">Active</span>
                     </Button>
                 </Row>
                 </Card.Header>
@@ -154,5 +151,5 @@ const Exercise = ({ exercise, swapExercise, activateExercise }) => {
 
 export default connect(
     null,
-    { swapExercise, addPlan, activateExercise }
+    { swapExercise, addPlan }
 )(Exercise);

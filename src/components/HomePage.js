@@ -12,12 +12,18 @@ const HomePage = () => {
         <Row><Col className="center">
             <TopBar />
         </Col></Row>
-        <Row>
+        <Row className="plan-lists">
             <Col>
                 <Row><PlanList currentView="back"/></Row>
             </Col>
             <Col>
-                <Row><PlanList currentView="front"/></Row>
+                <Row><PlanList currentView="mon"/></Row>
+                <Row><PlanList currentView="tue"/></Row>
+                <Row><PlanList currentView="wed"/></Row>
+                <Row><PlanList currentView="thr"/></Row>
+                <Row><PlanList currentView="fri"/></Row>
+                <Row><PlanList currentView="sat"/></Row>
+                <Row><PlanList currentView="sun"/></Row>
             </Col>
         </Row>
         </>

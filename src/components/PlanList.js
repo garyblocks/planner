@@ -47,7 +47,7 @@ const PlanList = ({ currentView, plans, changeView }) => {
                         return <Plan key={`todo-${plan.id}`} plan={plan}/>;
                     })
         } else {
-            return <h3>no plans</h3>
+            return <div></div>
         }
     }
 
