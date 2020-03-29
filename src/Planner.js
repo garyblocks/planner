@@ -70,13 +70,13 @@ class Planner extends React.Component {
             })
 
             // download exercises
-            axios.post(API_URL + 'planner/exercises', {}, {withCredentials: true})
+            axios.get(API_URL + 'planner/exercises', {withCredentials: true})
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                const saved_todos = res.data;
-                saved_todos.forEach(function(item) {
-
+                console.log('Hello');
+                const exercises = res.data;
+                exercises.forEach(function(item) {
                     this.props.addExercise(
                         item.id,
                         item.tag,

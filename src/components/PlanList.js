@@ -1,6 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import axios from 'axios';
+import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
+import Card from 'react-bootstrap/Card'; 
+import Collapse from 'react-bootstrap/Collapse'; 
+import Button from 'react-bootstrap/Button'; 
 import Plan from "./Plan";
 import { connect } from "react-redux";
 import { changeView } from "../redux/actions";
@@ -51,15 +55,88 @@ const PlanList = ({ currentView, plans, changeView }) => {
         }
     }
 
+    const [open, setOpen] = useState(true);
+
     return (
-        <Col className="center" ref={drop}>
-            <ul
-                className="plan-list" 
-                style={{'max-height': 'calc(100vh - 100px)', 'overflow-y': 'auto'}}
+        <Col
+            className="center" ref={drop}
+            style={{ 'padding': '2px' }}
+        >
+            <Card
+                style={{
+                    'border': '3px solid #BDC0BA',
+                    'borderRadius': '8px',
+                    'margin': '0 12px'
+                }}
             >
-                <h2>{currentView}</h2>
-                { renderPlans(plans) }
-            </ul>
+                <Card.Header
+                    onClick={() => setOpen(!open)}
+                    aria-controls={ "view_" + currentView }
+                    aria-expanded={open}
+                    style={{
+                        'textAlign': 'left'
+                    }}
+                >
+                    <Row>
+                        <Col><h3>{currentView}</h3></Col>
+                        <Col>
+                            <Button
+                                className="float-right"
+                                variant="outline-danger"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    const filters = { 
+                                        view: currentView,
+                                        done: true
+                                    };
+                                    const updates = {
+                                        view: 'archive'
+                                    }
+                                    const data = { filters, updates };
+                                    axios.patch(API_URL + 'planner/plans', {data}, {withCredentials: true})
+                                    .then(res => {
+                                        console.log(res);
+                                        res.data.forEach(function(plan) {
+                                            changeView(
+                                                plan.id,
+                                                plan.view
+                                            );
+                                        });
+                                    });
+                                }}
+                                style={{
+                                    "padding": "0.5rem",
+                                    "lineHeight": "1"
+                                }}
+                            >
+                                <i
+                                    className="material-icons"
+                                    style={{
+                                        "fontSize": '18px',
+                                        "margin": "0"
+                                    }}
+                                >
+                                    delete_outline
+                                </i>
+                            </Button>
+                        </Col>
+                    </Row>
+                </Card.Header>
+                <Collapse in={open} id={ "view_" + currentView }>
+                    <div>
+                        <Card.Body
+                            style={{
+                                'maxHeight': 'calc(100vh - 100px)',
+                                'overflowY': 'auto'
+                            }}
+                        >
+                            <ul className="plan-list">
+                                { renderPlans(plans) }
+                            </ul>
+                        </Card.Body>
+                    </div>
+                </Collapse>
+            </Card>
         </Col>
     );
 }

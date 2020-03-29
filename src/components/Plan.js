@@ -93,8 +93,7 @@ const Plan = ({ plan, swapPlan }) => {
             }}
             className="plan"
         >
-            <Col xs={1}></Col>
-            <Col xs={10}>
+            <Col>
             <li
                 className="todo-item"
             >
@@ -111,7 +110,7 @@ const Plan = ({ plan, swapPlan }) => {
                 <Col xs={10}>
                     <Button
                         className="plan-header-tag"
-                        variant={plan.completed ? "outline-secondary" : "outline-danger"}
+                        variant={plan.completed ? "outline-secondary" : "outline-success"}
                     >{plan.tag}</Button>
                     <span
                         className={cx(
@@ -133,7 +132,6 @@ const Plan = ({ plan, swapPlan }) => {
             </Card>
             </li>
             </Col>
-            <Col xs={1}></Col>
         </Row>
     )
 };
