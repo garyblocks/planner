@@ -4,8 +4,8 @@ import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { deleteAllComplete } from '../redux/actions';
-import { API_URL } from '../constants';
+import { deleteAllComplete } from '../../redux/actions';
+import { API_URL } from '../../constants';
 import AddTag from './AddTag';
 import AddPlan from './AddPlan';
 

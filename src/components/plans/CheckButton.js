@@ -1,8 +1,8 @@
 import React from "react";
 import axios from 'axios';
 import { connect } from "react-redux";
-import { togglePlan } from "../redux/actions";
-import { API_URL } from '../constants';
+import { togglePlan } from "../../redux/actions";
+import { API_URL } from '../../constants';
 
 const CheckButton = ({ plan, togglePlan }) => {
     return (

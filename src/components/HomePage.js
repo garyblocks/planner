@@ -2,8 +2,8 @@ import React from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import TopBar from "./TopBar";
-import PlanList from "./PlanList";
+import TopBar from "./plans/TopBar";
+import PlanList from "./plans/PlanList";
 
 
 const HomePage = () => {
@@ -15,6 +15,7 @@ const HomePage = () => {
         <Row className="plan-lists">
             <Col>
                 <Row><PlanList currentView="back"/></Row>
+                <Row><PlanList currentView="front"/></Row>
             </Col>
             <Col>
                 <Row><PlanList currentView="mon"/></Row>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
-import { API_URL } from '../constants';
+import { API_URL } from '../../constants';
 
 const AddTag = () => {
     const [tagName, setTagName] = useState("");

@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from 'axios';
 import Card from 'react-bootstrap/Card'; 
 import { connect } from "react-redux";
-import { changeData } from "../redux/actions";
-import { API_URL } from '../constants';
+import { changeData } from "../../redux/actions";
+import { API_URL } from '../../constants';
 import TextareaAutosize from 'react-textarea-autosize';
 
 const PlanBody = ({ plan, changeData }) => {

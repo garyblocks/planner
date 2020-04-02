@@ -7,11 +7,11 @@ import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button'; 
 import Plan from "./Plan";
 import { connect } from "react-redux";
-import { changeView } from "../redux/actions";
+import { changeView } from "../../redux/actions";
 import { useDrop } from 'react-dnd'
-import { ItemTypes } from '../dndConstants';
-import { API_URL } from '../constants';
-import { getPlansByView } from '../redux/selectors';
+import { ItemTypes } from '../../dndConstants';
+import { API_URL } from '../../constants';
+import { getPlansByView } from '../../redux/selectors';
 
 const mapStateToProps = (state, ownProps) => {
     const { currentView } = ownProps; 

@@ -2,7 +2,7 @@ import React from "react";
 import Col from 'react-bootstrap/Col'; 
 import Exercise from "./Exercise";
 import { connect } from "react-redux";
-import { getExercises } from '../redux/selectors';
+import { getExercises } from '../../redux/selectors';
 
 
 const mapStateToProps = state => {

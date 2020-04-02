@@ -1,28 +1,34 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
+import cx from "classnames";
 import { useDrag, useDrop } from 'react-dnd'
 import { connect } from "react-redux";
-import { swapExercise, addPlan } from "../redux/actions";
+import { swapPlan } from "../../redux/actions";
 import Card from 'react-bootstrap/Card'; 
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
+import Collapse from 'react-bootstrap/Collapse'; 
 import Button from 'react-bootstrap/Button'; 
-import { ItemTypes } from '../dndConstants';
-import axios from 'axios';
-import { API_URL } from '../constants';
+import { ItemTypes } from '../../dndConstants';
+import CheckButton from './CheckButton';
+import PlanBody from './PlanBody';
 
-const Exercise = ({ exercise, swapExercise, addPlan }) => {
+const Plan = ({ plan, swapPlan }) => {
     const ref = useRef(null);
 
     const [, drop] = useDrop({
-        accept: ItemTypes.EXERCISE,
+        accept: ItemTypes.PLAN,
         hover(item, monitor) {
             if (!ref.current) {
                 return;
             }
+            // don't swap if items are from different view
+            if (item.view !== plan.view) {
+                return;
+            }
             const dragId = item.id;
-            const hoverId = exercise.id;
+            const hoverId = plan.id;
             const dragIndex = item.index;
-            const hoverIndex = exercise.index;
+            const hoverIndex = plan.index;
             // Don't replace items with themselves
             if (dragIndex === hoverIndex) {
                 return;
@@ -47,7 +53,7 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
                 return
             }
             // Time to actually perform the action
-            swapExercise(
+            swapPlan(
                 dragId,
                 hoverId,
                 dragIndex,
@@ -63,37 +69,19 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
 
     const [{isDragging}, drag] = useDrag({
         item: {
-            type: ItemTypes.EXERCISE,
-            index: exercise.index,
-            id: exercise.id
+            type: ItemTypes.PLAN,
+            index: plan.index,
+            view: plan.view,
+            id: plan.id
         },
         collect: monitor => ({
             isDragging: !!monitor.isDragging(),
         }),
     })
 
-    const handleActiveEx = () => {
-        const data = { id: exercise.id };
-        // sets state back to empty string
-        axios.post(API_URL + 'planner/exercise/activate', {data}, {withCredentials: true})
-        .then(res => {
-            console.log(res);
-            console.log(res.data);
-            const rows = res.data
-            // dispatches actions to add plan
-            rows.forEach(function(item) {
-                addPlan(
-                    item.id,
-                    item.tag,
-                    item.title,
-                    item.data,
-                    item.view ? item.view : 'back'
-                );
-            });
-        });
-    };
-
     drag(drop(ref));
+
+    const [open, setOpen] = useState(false);
 
     return (
         <Row 
@@ -103,53 +91,52 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
                 cursor: 'move',
                 margin: '0 1px'
             }}
+            className="plan"
         >
-            <Col xs={1}></Col>
-            <Col xs={10}>
+            <Col>
             <li
                 className="todo-item"
             >
-            <Card border="dark">
-                <Card.Header>
+            <Card
+                border="dark"
+                className="plan-card"
+            >
+                <Card.Header
+                    onClick={() => setOpen(!open)}
+                    aria-controls={ "plan_" + plan.id }
+                    aria-expanded={open}
+                >
                 <Row>
-                    <Button variant="info" className="exercise-button">
-                        <span className="exercise-text">
-                            Tag: {exercise.tag}
-                        </span>
-                    </Button>
-                    <Button variant="info" className="exercise-button">
-                        <span className="exercise-text">
-                            Name: {exercise.name}
-                        </span>
-                    </Button>
-                    <Button variant="info" className="exercise-button">
-                        <span className="exercise-text">
-                            Unit: {exercise.unit}
-                        </span>
-                    </Button>
-                    <Button variant="info" className="exercise-button">
-                        <span className="exercise-text">
-                            Freqency: {exercise.freq}
-                        </span>
-                    </Button>
+                <Col xs={10}>
                     <Button
-                        variant="danger"
-                        className="exercise-button"
-                        onClick={() => handleActiveEx()}
+                        className="plan-header-tag"
+                        variant={plan.completed ? "outline-secondary" : "outline-success"}
+                    >{plan.tag}</Button>
+                    <span
+                        className={cx(
+                            "plan-header-text",
+                            plan && plan.completed && "plan-header-text--completed"
+                        )}
                     >
-                        <span className="exercise-text">Active</span>
-                    </Button>
+                        {plan.title}
+                    </span>
+                </Col>
+                <Col xs={2}><CheckButton plan={plan}/></Col>
                 </Row>
                 </Card.Header>
+                <Collapse in={open} id={ "plan_" + plan.id }>
+                    <div>
+                        <PlanBody plan={plan}/>
+                    </div>
+                </Collapse>
             </Card>
             </li>
             </Col>
-            <Col xs={1}></Col>
         </Row>
     )
 };
 
 export default connect(
     null,
-    { swapExercise, addPlan }
-)(Exercise);
+    { swapPlan }
+)(Plan);

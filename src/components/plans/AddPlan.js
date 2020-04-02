@@ -4,14 +4,14 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import { API_URL } from '../constants';
-import { addExercise } from '../redux/actions';
+import { addPlan } from '../../redux/actions';
+import { API_URL } from '../../constants';
 
-const AddExercise = ({ addExercise }) => {
-    // set name of the exercise
-    const [exerciseName, setExerciseName] = useState("");
-    const handleExerciseNameChange = (event) => {
-        setExerciseName(event.target.value);
+const AddPlan = ({ addPlan }) => {
+    // set name of the plan
+    const [planName, setPlanName] = useState("");
+    const handlePlanNameChange = (event) => {
+        setPlanName(event.target.value);
     }
 
     // choose a tag
@@ -32,34 +32,25 @@ const AddExercise = ({ addExercise }) => {
         });
     }, [])
 
-    // set the frequency of the exercise
-    const [exerciseFreq, setExerciseFreq] = useState("");
-    const handleExerciseFreqChange = (event) => {
-        setExerciseFreq(event.target.value);
-    }
-
-    const handleAddExercise = () => {
+    const handleAddPlan = () => {
         const data = {
             tag: tagName,
-            title: exerciseName,
-            data: exerciseName,
-            frequency: exerciseFreq
+            plan: planName
         };
         // sets state back to empty string
-        axios.post(API_URL + 'planner/exercise/create', {data}, {withCredentials: true})
+        axios.post(API_URL + 'planner/create_plan', {data}, {withCredentials: true})
         .then(res => {
             console.log(res);
             console.log(res.data);
-            // dispatches actions to add exercise
-            addExercise(
+            // dispatches actions to add plan
+            addPlan(
                 res.data,
                 tagName,
-                exerciseName,
-                'month',
-                exerciseFreq,
-                false
+                planName,
+                planName,
+                "back"
             );
-            setExerciseName("");
+            setPlanName("");
         });
     };
 
@@ -79,14 +70,13 @@ const AddExercise = ({ addExercise }) => {
             <Form.Control as="select" placeholder="Tag" onChange={handleTagNameChange} value={tagName} id="topbar-addplan-select-tag">
                 {renderTags()}
             </Form.Control>
-            <FormControl type="text" placeholder="Exercise Name" className="mr-sm-2" onChange={handleExerciseNameChange} value={exerciseName}/>
-            <FormControl type="text" placeholder="Freq" className="mr-sm-2" onChange={handleExerciseFreqChange} value={exerciseFreq}/>
-            <Button variant="outline-success" onClick={() => handleAddExercise()}>Add</Button>
+            <FormControl type="text" placeholder="Plan Name" className="mr-sm-2" onChange={handlePlanNameChange} value={planName}/>
+            <Button variant="outline-success" onClick={() => handleAddPlan()}>Add</Button>
         </Form>
     )
 }
 
 export default connect(
     null,
-    { addExercise }
-)(AddExercise);
+    { addPlan }
+)(AddPlan);
