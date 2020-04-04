@@ -1,6 +1,5 @@
-import { VISIBILITY_FILTERS } from "../constants";
-
 export const getPlanState = store => store.plans;
+export const getViewState = store => store.views;
 export const getExerciseState = store => store.exercises;
 
 export const getTodoList = store =>
@@ -11,19 +10,6 @@ export const getTodoById = (store, id) =>
 
 export const getTodos = store =>
      getTodoList(store).map(id => getTodoById(store, id));
-
-export const getTodosByVisibilityFilter = (store, visibilityFilter) => {
-    const allTodos = getTodos(store);
-    switch (visibilityFilter) {
-        case VISIBILITY_FILTERS.COMPLETED:
-            return allTodos.filter(todo => todo.completed);
-        case VISIBILITY_FILTERS.INCOMPLETE:
-            return allTodos.filter(todo => !todo.completed);
-        case VISIBILITY_FILTERS.ALL:
-        default:
-            return allTodos;
-    }
-}
 
 export const getLogin = store => getPlanState(store).login;
 
@@ -55,3 +41,6 @@ export const getExercises = store => {
     });
     return allExs;
 }
+
+export const getViewCfg = (store, view) =>
+    getViewState(store) ? getViewState(store).viewCfgs[view] : {};

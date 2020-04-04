@@ -9,3 +9,5 @@ export const CHANGE_DATA = "CHANGE_DATA";
 export const ADD_EXERCISE = "ADD_EXERCISE";
 export const SWAP_EXERCISE = "SWAP_EXERCISE";
 export const ACTIVATE_EXERCISE = "ACTIVATE_EXERCISE";
+export const EXPAND_VIEW = "EXPAND_VIEW";
+export const COLLAPSE_VIEW = "COLLAPSE_VIEW";

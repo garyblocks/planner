@@ -11,15 +11,16 @@ import { changeView } from "../../redux/actions";
 import { useDrop } from 'react-dnd'
 import { ItemTypes } from '../../dndConstants';
 import { API_URL } from '../../constants';
-import { getPlansByView } from '../../redux/selectors';
+import { getPlansByView, getViewCfg } from '../../redux/selectors';
 
 const mapStateToProps = (state, ownProps) => {
     const { currentView } = ownProps; 
     const plans = getPlansByView(state, currentView);
-    return { plans }
+    const view_cfg = getViewCfg(state, currentView);
+    return { plans, view_cfg }
 }
 
-const PlanList = ({ currentView, plans, changeView }) => {
+const PlanList = ({ currentView, plans, view_cfg, changeView }) => {
 
     const [, drop] = useDrop({
         accept: ItemTypes.PLAN,
@@ -55,7 +56,25 @@ const PlanList = ({ currentView, plans, changeView }) => {
         }
     }
 
-    const [open, setOpen] = useState(true);
+    const renderHeader = (plans) => {
+        var n_completed = 0;
+        for (var i = 0; i < plans.length; i++) {
+            if (plans[i].completed) {
+                n_completed += 1;
+            }
+        }
+        if (n_completed === plans.length) {
+            return <h3 style={{'color': 'lightgray' }}>
+                {currentView} ({n_completed}/{plans.length})
+                </h3>
+        } else {
+            return <h3>
+                {currentView} ({n_completed}/{plans.length})
+            </h3>
+        }
+    }
+
+    const [collapse, setCollapse] = useState(view_cfg['collapse']);
 
     return (
         <Col
@@ -70,15 +89,15 @@ const PlanList = ({ currentView, plans, changeView }) => {
                 }}
             >
                 <Card.Header
-                    onClick={() => setOpen(!open)}
+                    onClick={() => setCollapse(!collapse)}
                     aria-controls={ "view_" + currentView }
-                    aria-expanded={open}
+                    aria-expanded={!collapse}
                     style={{
                         'textAlign': 'left'
                     }}
                 >
                     <Row>
-                        <Col><h3>{currentView}</h3></Col>
+                        <Col>{renderHeader(plans)}</Col>
                         <Col>
                             <Button
                                 className="float-right"
@@ -122,7 +141,7 @@ const PlanList = ({ currentView, plans, changeView }) => {
                         </Col>
                     </Row>
                 </Card.Header>
-                <Collapse in={open} id={ "view_" + currentView }>
+                <Collapse in={!collapse} id={ "view_" + currentView }>
                     <div>
                         <Card.Body
                             style={{

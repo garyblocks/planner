@@ -35,10 +35,11 @@ const AddPlan = ({ addPlan }) => {
     const handleAddPlan = () => {
         const data = {
             tag: tagName,
-            plan: planName
+            plan: planName,
+            view: 'back'
         };
         // sets state back to empty string
-        axios.post(API_URL + 'planner/create_plan', {data}, {withCredentials: true})
+        axios.post(API_URL + 'planner/plans', {data}, {withCredentials: true})
         .then(res => {
             console.log(res);
             console.log(res.data);
