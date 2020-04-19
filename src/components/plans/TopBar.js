@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { deleteAllComplete } from '../../redux/actions';
 import { API_URL } from '../../constants';
 import AddTag from './AddTag';
+import DeleteTag from './DeleteTag';
 import AddPlan from './AddPlan';
 
 const TopBar = ({ deleteAllComplete }) => {
@@ -23,10 +24,12 @@ const TopBar = ({ deleteAllComplete }) => {
 
     const renderForm = () => {
         switch (dropdownTitle) {
-            case "Add Plan":
-                return <AddPlan />;
-            default:
+            case "Add Tag":
                 return <AddTag />;
+            case "Delete Tag":
+                return <DeleteTag />;
+            default:
+                return <AddPlan />;
         }
     }
 
@@ -48,6 +51,7 @@ const TopBar = ({ deleteAllComplete }) => {
                         <NavDropdown.Item href="#action/3.1" onClick={() => setDropdownTitle("Add Tag")}>Add Tag</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.2" onClick={() => setDropdownTitle("Add Plan")}>Add Plan</NavDropdown.Item>
                         <NavDropdown.Divider />
+                        <NavDropdown.Item href="#action/3.1" onClick={() => setDropdownTitle("Delete Tag")}>Delete Tag</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.4" onClick={() => handleRemoveComplete()}>Delete All Complete</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>

@@ -1,23 +1,23 @@
 export const getPlanState = store => store.plans;
 export const getViewState = store => store.views;
 export const getExerciseState = store => store.exercises;
+export const getTagState = store => store.tags;
 
-export const getTodoList = store =>
+export const getPlanList = store =>
     getPlanState(store) ? getPlanState(store).allIds : [];
 
 export const getTodoById = (store, id) =>
     getPlanState(store) ? { ...getPlanState(store).byIds[id], id } : {};
 
-export const getTodos = store =>
-     getTodoList(store).map(id => getTodoById(store, id));
-
 export const getLogin = store => getPlanState(store).login;
+
+export const getTags = store => getTagState(store).tags;
 
 export const getPlanById = (store, id) =>
     getPlanState(store) ? { ...getPlanState(store).byIds[id], id } : {};
 
 export const getPlans = store =>
-     getTodoList(store).map(id => getPlanById(store, id));
+     getPlanList(store).map(id => getPlanById(store, id));
 
 export const getPlansByView = (store, view) => {
     const allPlans = getPlans(store);

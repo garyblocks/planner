@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
@@ -6,8 +6,14 @@ import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { API_URL } from '../../constants';
 import { addExercise } from '../../redux/actions';
+import { getTags } from '../../redux/selectors';
 
-const AddExercise = ({ addExercise }) => {
+const mapStateToProps = (state) => {
+    const tags = getTags(state);
+    return { tags }
+}
+
+const AddExercise = ({ tags, addExercise }) => {
     // set name of the exercise
     const [exerciseName, setExerciseName] = useState("");
     const handleExerciseNameChange = (event) => {
@@ -15,22 +21,11 @@ const AddExercise = ({ addExercise }) => {
     }
 
     // choose a tag
-    const [tagName, setTagName] = useState("");
+    var defaultTag = "";
+    const [tagName, setTagName] = useState(defaultTag);
     const handleTagNameChange = (event) => {
         setTagName(event.target.value);
     }
-
-    // get a list of tags
-    const [tags, setTags] = useState([]);
-    useEffect(() => {
-        axios.post(API_URL + 'planner/get_tags', {}, {withCredentials: true})
-        .then(res => {
-            console.log(res);
-            console.log(res.data);
-            setTags(res.data);
-            setTagName(res.data ? res.data[0].tag : "");
-        });
-    }, [])
 
     // set the frequency of the exercise
     const [exerciseFreq, setExerciseFreq] = useState("");
@@ -39,25 +34,27 @@ const AddExercise = ({ addExercise }) => {
     }
 
     const handleAddExercise = () => {
+        if (tags && tags.length !== 0) {
+            defaultTag = tags[0].tag;
+        }
         const data = {
-            tag: tagName,
+            tag: tagName.length !== 0 ? tagName : defaultTag,
             title: exerciseName,
             data: exerciseName,
             frequency: exerciseFreq
         };
+        console.log(data);
         // sets state back to empty string
-        axios.post(API_URL + 'planner/exercise/create', {data}, {withCredentials: true})
+        axios.post(API_URL + 'planner/exercises', {data}, {withCredentials: true})
         .then(res => {
             console.log(res);
-            console.log(res.data);
             // dispatches actions to add exercise
             addExercise(
-                res.data,
-                tagName,
-                exerciseName,
-                'month',
-                exerciseFreq,
-                false
+                res.data.id,
+                res.data.tag,
+                res.data.title,
+                res.data.level,
+                res.data.frequency
             );
             setExerciseName("");
         });
@@ -66,7 +63,7 @@ const AddExercise = ({ addExercise }) => {
     const renderTags = () => {
         const options = tags.map( item => {
             return (
-                <option key={item.tag}>
+                <option key={item.id}>
                     {item.tag}
                 </option>
             );
@@ -87,6 +84,6 @@ const AddExercise = ({ addExercise }) => {
 }
 
 export default connect(
-    null,
+    mapStateToProps,
     { addExercise }
 )(AddExercise);

@@ -124,7 +124,7 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
                     </Button>
                     <Button variant="info" className="exercise-button">
                         <span className="exercise-text">
-                            Unit: {exercise.unit}
+                            Level: {exercise.level}
                         </span>
                     </Button>
                     <Button variant="info" className="exercise-button">

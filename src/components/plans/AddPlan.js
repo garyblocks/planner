@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
@@ -6,8 +6,14 @@ import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { addPlan } from '../../redux/actions';
 import { API_URL } from '../../constants';
+import { getTags } from '../../redux/selectors';
 
-const AddPlan = ({ addPlan }) => {
+const mapStateToProps = (state) => {
+    const tags = getTags(state);
+    return { tags }
+}
+
+const AddPlan = ({ tags, addPlan }) => {
     // set name of the plan
     const [planName, setPlanName] = useState("");
     const handlePlanNameChange = (event) => {
@@ -15,38 +21,30 @@ const AddPlan = ({ addPlan }) => {
     }
 
     // choose a tag
-    const [tagName, setTagName] = useState("");
+    var defaultTag = "";
+    const [tagName, setTagName] = useState(defaultTag);
     const handleTagNameChange = (event) => {
         setTagName(event.target.value);
     }
 
-    // get a list of tags
-    const [tags, setTags] = useState([]);
-    useEffect(() => {
-        axios.post(API_URL + 'planner/get_tags', {}, {withCredentials: true})
-        .then(res => {
-            console.log(res);
-            console.log(res.data);
-            setTags(res.data);
-            setTagName(res.data ? res.data[0].tag : "");
-        });
-    }, [])
-
     const handleAddPlan = () => {
+        if (tags && tags.length !== 0) {
+            defaultTag = tags[0].tag;
+        }
         const data = {
-            tag: tagName,
+            tag: tagName.length !== 0 ? tagName : defaultTag,
             plan: planName,
             view: 'back'
         };
+        console.log(data);
         // sets state back to empty string
         axios.post(API_URL + 'planner/plans', {data}, {withCredentials: true})
         .then(res => {
             console.log(res);
-            console.log(res.data);
             // dispatches actions to add plan
             addPlan(
                 res.data,
-                tagName,
+                data.tag,
                 planName,
                 planName,
                 "back"
@@ -58,7 +56,7 @@ const AddPlan = ({ addPlan }) => {
     const renderTags = () => {
         const options = tags.map( item => {
             return (
-                <option key={item.tag}>
+                <option key={item.id}>
                     {item.tag}
                 </option>
             );
@@ -78,6 +76,6 @@ const AddPlan = ({ addPlan }) => {
 }
 
 export default connect(
-    null,
+    mapStateToProps,
     { addPlan }
 )(AddPlan);

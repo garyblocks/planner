@@ -9,7 +9,8 @@ export default function(state = initialState, action) {
     switch (action.type) {
 
         case ADD_EXERCISE: {
-            const { id, tag, name, unit, freq, active } = action.payload;
+            const { id, tag, title, level, frequency } = action.payload;
+            console.log(action.payload);
             return {
                 ...state,
                 allIds: [...state.allIds, id],
@@ -17,10 +18,9 @@ export default function(state = initialState, action) {
                     ...state.byIds,
                     [id]: {
                         tag: tag,
-                        name: name,
-                        unit: unit,
-                        freq: freq,
-                        active: active,
+                        name: title,
+                        level: level,
+                        freq: frequency,
                         index: state.allIds.length
                     }
                 }

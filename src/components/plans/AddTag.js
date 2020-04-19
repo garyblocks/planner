@@ -3,9 +3,11 @@ import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
+import { connect } from 'react-redux';
 import { API_URL } from '../../constants';
+import { addTag } from '../../redux/actions';
 
-const AddTag = () => {
+const AddTag = ({ addTag }) => {
     const [tagName, setTagName] = useState("");
     // bind input value
     const handleTagNameChange = (event) => {
@@ -19,10 +21,10 @@ const AddTag = () => {
         };
         // sets state back to empty string
         setTagName('');
-        axios.post(API_URL + 'planner/create_tag', {data}, {withCredentials: true})
+        axios.post(API_URL + 'planner/tags', {data}, {withCredentials: true})
         .then(res => {
             console.log(res);
-            console.log(res.data);
+            addTag(res.data.tag, res.data.id);
         });
     };
 
@@ -34,4 +36,7 @@ const AddTag = () => {
     )
 }
 
-export default AddTag;
+export default connect(
+    null,
+    { addTag }
+)(AddTag);

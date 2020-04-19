@@ -1,7 +1,8 @@
 import { 
     ADD_PLAN, TOGGLE_PLAN, SET_FILTER, LOGIN, DELETE_ALL_COMPLETE, SWAP_PLAN,
     CHANGE_VIEW, CHANGE_DATA, ADD_EXERCISE, SWAP_EXERCISE, ACTIVATE_EXERCISE,
-    EXPAND_VIEW, COLLAPSE_VIEW
+    EXPAND_VIEW, COLLAPSE_VIEW,
+    ADD_TAG, DELETE_TAG
 } from "./actionTypes";
 
 export const addPlan = (id, tag, title, content, view) => ({
@@ -35,9 +36,9 @@ export const changeData = (id, data) => ({
     payload: { id, data }
 });
 
-export const addExercise = (id, tag, name, unit, freq, active) => ({
+export const addExercise = (id, tag, title, level, frequency) => ({
     type: ADD_EXERCISE,
-    payload: { id, tag, name, unit, freq, active }
+    payload: { id, tag, title, level, frequency }
 });
 
 export const swapExercise = (id1, id2, index1, index2) => ({
@@ -58,4 +59,14 @@ export const expandView = view => ({
 export const collapseView = view => ({
     type: COLLAPSE_VIEW,
     payload: { view }
+});
+
+export const addTag = (tag, id) => ({
+    type: ADD_TAG,
+    payload: { tag, id }
+});
+
+export const deleteTag = tag => ({
+    type: DELETE_TAG,
+    payload: { tag }
 });

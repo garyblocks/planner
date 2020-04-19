@@ -14,7 +14,7 @@ import Login from "./components/Login";
 import HomePage from "./components/HomePage";
 import ExercisePage from "./components/ExercisePage";
 import { API_URL, BASE_URL } from './constants';
-import { addPlan, togglePlan, addExercise } from './redux/actions';
+import { addPlan, togglePlan, addExercise, addTag } from './redux/actions';
 import { getLogin } from "./redux/selectors";
 
 const mapStateToProps = state => {
@@ -52,7 +52,6 @@ class Planner extends React.Component {
             axios.post(API_URL + 'planner/get_plans', {}, {withCredentials: true})
             .then(res => {
                 console.log(res);
-                console.log(res.data);
                 const saved_todos = res.data;
                 saved_todos.forEach(function(item) {
 
@@ -73,18 +72,26 @@ class Planner extends React.Component {
             axios.get(API_URL + 'planner/exercises', {withCredentials: true})
             .then(res => {
                 console.log(res);
-                console.log(res.data);
-                console.log('Hello');
                 const exercises = res.data;
                 exercises.forEach(function(item) {
+                    console.log(item);
                     this.props.addExercise(
                         item.id,
                         item.tag,
                         item.title,
-                        item.unit,
-                        item.frequency,
-                        item.active
+                        item.level,
+                        item.frequency
                     );
+                }.bind(this));
+            })
+
+            // download tags
+            axios.get(API_URL + 'planner/tags', {withCredentials: true})
+            .then(res => {
+                console.log(res);
+                const tags = res.data;
+                tags.forEach(function(tag) {
+                    this.props.addTag(tag.tag, tag.id);
                 }.bind(this));
             })
         }
@@ -101,5 +108,5 @@ class Planner extends React.Component {
 
 export default connect(
     mapStateToProps,
-    { addPlan, togglePlan, addExercise }
+    { addPlan, togglePlan, addExercise, addTag }
 )(Planner);
