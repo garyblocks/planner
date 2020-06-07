@@ -60,7 +60,8 @@ class Planner extends React.Component {
                         item.tag,
                         item.title,
                         item.data,
-                        item.view ? item.view : 'back'
+                        item.view ? item.view : 'back',
+                        item.source
                     );
                     if (item.done) {
                         this.props.togglePlan(item.id);

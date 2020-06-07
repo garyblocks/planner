@@ -1,6 +1,6 @@
 import {
     ADD_PLAN, TOGGLE_PLAN, LOGIN, DELETE_ALL_COMPLETE,
-    SWAP_PLAN, CHANGE_VIEW, CHANGE_DATA
+    SWAP_PLAN, CHANGE_VIEW, CHANGE_DATA, DELETE_PLAN
 } from "../actionTypes";
 
 const initialState = {
@@ -13,7 +13,7 @@ export default function(state = initialState, action) {
     switch (action.type) {
 
         case ADD_PLAN: {
-            const { id, tag, title, content, view } = action.payload;
+            const { id, tag, title, content, view, source } = action.payload;
             return {
                 ...state,
                 allIds: [...state.allIds, id],
@@ -25,6 +25,7 @@ export default function(state = initialState, action) {
                         content: content,
                         completed: false,
                         view: view,
+                        source: source,
                         index: state.allIds.length
                     }
                 }
@@ -42,6 +43,14 @@ export default function(state = initialState, action) {
                         completed: !state.byIds[id].completed
                     }
                 }
+            };
+        }
+
+        case DELETE_PLAN: {
+            const { id } = action.payload;
+            return {
+                ...state,
+                allIds: state.allIds.filter((plan_id, index) => plan_id !== id)
             };
         }
 

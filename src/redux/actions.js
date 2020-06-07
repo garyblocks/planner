@@ -1,17 +1,22 @@
 import { 
-    ADD_PLAN, TOGGLE_PLAN, SET_FILTER, LOGIN, DELETE_ALL_COMPLETE, SWAP_PLAN,
+    ADD_PLAN, TOGGLE_PLAN, SET_FILTER, LOGIN, DELETE_ALL_COMPLETE, SWAP_PLAN, DELETE_PLAN,
     CHANGE_VIEW, CHANGE_DATA, ADD_EXERCISE, SWAP_EXERCISE, ACTIVATE_EXERCISE,
     EXPAND_VIEW, COLLAPSE_VIEW,
     ADD_TAG, DELETE_TAG
 } from "./actionTypes";
 
-export const addPlan = (id, tag, title, content, view) => ({
+export const addPlan = (id, tag, title, content, view, source) => ({
     type: ADD_PLAN,
-    payload: { id, tag, title, content, view }
+    payload: { id, tag, title, content, view, source }
 });
 
 export const togglePlan = id => ({
     type: TOGGLE_PLAN,
+    payload: { id }
+});
+
+export const deletePlan = id => ({
+    type: DELETE_PLAN,
     payload: { id }
 });
 

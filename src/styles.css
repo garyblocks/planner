@@ -38,15 +38,6 @@
     padding: 5px;
     margin: -1px 6px 2px 2px;
 }
-.plan-header-text {
-    cursor: pointer;
-    line-height: 1.5;
-    margin: 2px;
-}
-.plan-header-text--completed {
-    text-decoration: line-through;
-    color: lightgray;
-}
 
 /** visibility filters **/
 .filter {

@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import cx from "classnames";
 import { useDrag, useDrop } from 'react-dnd'
 import { connect } from "react-redux";
 import { swapPlan } from "../../redux/actions";
@@ -9,8 +8,8 @@ import Col from 'react-bootstrap/Col';
 import Collapse from 'react-bootstrap/Collapse'; 
 import Button from 'react-bootstrap/Button'; 
 import { ItemTypes } from '../../dndConstants';
-import CheckButton from './CheckButton';
 import PlanBody from './PlanBody';
+import PlanButtons from './PlanButtons';
 
 const Plan = ({ plan, swapPlan }) => {
     const ref = useRef(null);
@@ -83,6 +82,14 @@ const Plan = ({ plan, swapPlan }) => {
 
     const [open, setOpen] = useState(false);
 
+    const renderColor = () => {
+        if (plan.completed) {
+            return "secondary";
+        } else {
+            return "success";
+        }
+    }
+
     return (
         <Row 
             ref={ref}
@@ -98,30 +105,34 @@ const Plan = ({ plan, swapPlan }) => {
                 className="todo-item"
             >
             <Card
-                border="dark"
+                border={renderColor()}
+                text={renderColor()}
                 className="plan-card"
             >
                 <Card.Header
                     onClick={() => setOpen(!open)}
                     aria-controls={ "plan_" + plan.id }
                     aria-expanded={open}
+                    style={{
+                        backgroundColor: plan.completed ? "#f0f1f2": "#d9ecdb"
+                    }}
                 >
                 <Row>
-                <Col xs={10}>
+                <Col xs={9}>
                     <Button
                         className="plan-header-tag"
-                        variant={plan.completed ? "outline-secondary" : "outline-success"}
+                        variant={"outline-" + renderColor()}
                     >{plan.tag}</Button>
                     <span
-                        className={cx(
-                            "plan-header-text",
-                            plan && plan.completed && "plan-header-text--completed"
-                        )}
+                        style={{
+                            textDecoration: plan.completed ? "line-through": "",
+                            color: plan.completed ? "lighgray": ""
+                        }}
                     >
                         {plan.title}
                     </span>
                 </Col>
-                <Col xs={2}><CheckButton plan={plan}/></Col>
+                <Col xs={3}><PlanButtons plan={plan}/></Col>
                 </Row>
                 </Card.Header>
                 <Collapse in={open} id={ "plan_" + plan.id }>

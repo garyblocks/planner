@@ -1,5 +1,6 @@
 export const ADD_PLAN = "ADD_PLAN";
 export const TOGGLE_PLAN = "TOGGLE_PLAN";
+export const DELETE_PLAN = "DELETE_PLAN";
 export const SET_FILTER = "SET_FILTER";
 export const LOGIN = "LOGIN";
 export const DELETE_ALL_COMPLETE = "DELETE_ALL_COMPLETE";
