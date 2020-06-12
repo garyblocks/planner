@@ -6,9 +6,8 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
 import Button from 'react-bootstrap/Button'; 
-import axios from 'axios';
 import { ItemTypes } from '../../dndConstants';
-import { API_URL } from '../../constants';
+import ExerciseButtons from './ExerciseButtons';
 
 const Exercise = ({ exercise, swapExercise, addPlan }) => {
     const ref = useRef(null);
@@ -72,27 +71,6 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
         }),
     })
 
-    const handleActiveEx = () => {
-        const data = { id: exercise.id };
-        // sets state back to empty string
-        axios.post(API_URL + 'planner/exercise/activate', {data}, {withCredentials: true})
-        .then(res => {
-            console.log(res);
-            console.log(res.data);
-            const rows = res.data
-            // dispatches actions to add plan
-            rows.forEach(function(item) {
-                addPlan(
-                    item.id,
-                    item.tag,
-                    item.title,
-                    item.data,
-                    'back'
-                );
-            });
-        });
-    };
-
     drag(drop(ref));
 
     return (
@@ -101,48 +79,36 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
             style={{
                 opacity: isDragging ? 0 : 1,
                 cursor: 'move',
-                margin: '0 1px'
+                margin: '1px 1px'
             }}
         >
             <Col xs={1}></Col>
             <Col xs={10}>
-            <li
-                className="todo-item"
-            >
-            <Card border="dark">
+            <li><Card border="dark">
                 <Card.Header>
                 <Row>
-                    <Button variant="info" className="exercise-button">
-                        <span className="exercise-text">
-                            Tag: {exercise.tag}
-                        </span>
-                    </Button>
-                    <Button variant="info" className="exercise-button">
-                        <span className="exercise-text">
-                            Name: {exercise.name}
-                        </span>
-                    </Button>
-                    <Button variant="info" className="exercise-button">
-                        <span className="exercise-text">
-                            Level: {exercise.level}
-                        </span>
-                    </Button>
-                    <Button variant="info" className="exercise-button">
-                        <span className="exercise-text">
-                            Freqency: {exercise.freq}
-                        </span>
-                    </Button>
+                    <Col xs={1}>
                     <Button
-                        variant="danger"
-                        className="exercise-button"
-                        onClick={() => handleActiveEx()}
+                        className="plan-header-tag"
+                        variant="outline-primary" 
+                    >{exercise.tag}</Button>
+                    </Col>
+                    <Col
+                        xs={9}
+                        text="primary"
+                        style={{
+                            textAlign: "left",
+                            fontSize: "18px"
+                        }}
                     >
-                        <span className="exercise-text">Active</span>
-                    </Button>
+                        {exercise.name}
+                    </Col>
+                    <Col xs={2}>
+                        <ExerciseButtons exercise={exercise} />
+                    </Col>
                 </Row>
                 </Card.Header>
-            </Card>
-            </li>
+            </Card></li>
             </Col>
             <Col xs={1}></Col>
         </Row>

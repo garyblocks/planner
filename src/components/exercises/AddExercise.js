@@ -27,21 +27,14 @@ const AddExercise = ({ tags, addExercise }) => {
         setTagName(event.target.value);
     }
 
-    // set the frequency of the exercise
-    const [exerciseFreq, setExerciseFreq] = useState("");
-    const handleExerciseFreqChange = (event) => {
-        setExerciseFreq(event.target.value);
-    }
-
     const handleAddExercise = () => {
         if (tags && tags.length !== 0) {
             defaultTag = tags[0].tag;
         }
         const data = {
             tag: tagName.length !== 0 ? tagName : defaultTag,
-            title: exerciseName,
+            name: exerciseName,
             data: exerciseName,
-            frequency: exerciseFreq
         };
         console.log(data);
         // sets state back to empty string
@@ -52,9 +45,7 @@ const AddExercise = ({ tags, addExercise }) => {
             addExercise(
                 res.data.id,
                 res.data.tag,
-                res.data.title,
-                res.data.level,
-                res.data.frequency
+                res.data.name,
             );
             setExerciseName("");
         });
@@ -77,7 +68,6 @@ const AddExercise = ({ tags, addExercise }) => {
                 {renderTags()}
             </Form.Control>
             <FormControl type="text" placeholder="Exercise Name" className="mr-sm-2" onChange={handleExerciseNameChange} value={exerciseName}/>
-            <FormControl type="text" placeholder="Freq" className="mr-sm-2" onChange={handleExerciseFreqChange} value={exerciseFreq}/>
             <Button variant="outline-success" onClick={() => handleAddExercise()}>Add</Button>
         </Form>
     )

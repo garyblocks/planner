@@ -16,7 +16,8 @@ class Login extends React.Component {
         this.state = {
             'csrf_token': '',
             'username': '',
-            'password': ''
+            'password': '',
+            'remember_me': false
         };
         this.initState = this.state;
     }
@@ -31,6 +32,19 @@ class Login extends React.Component {
                 'csrf_token': csrf_token
             });
         })
+        this.checkLogin();
+    }
+
+    checkLogin() {
+        const url = API_URL + 'auth/check_login';
+        console.log('GET: ' + url);
+        axios.get(url, {withCredentials: true})
+        .then(res => {
+            console.log(res);
+            if (res.data.login) {
+                this.props.login();
+            }
+        });
     }
 
     handleSubmit = event => {
@@ -47,13 +61,17 @@ class Login extends React.Component {
         };
         data.append("username", this.state.username);
         data.append("password", this.state.password);
+        data.append("remember_me", this.state.remember_me);
         data.append("csrf_token", csrf_token);
         data.append("submit", "Sign In");
+        console.log(API_URL + 'auth/api_login');
+        for (var pair of data.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]);
+        }
 
         axios.post(API_URL + 'auth/api_login', data, config)
         .then(res => {
             console.log(res);
-            console.log(res.data);
             if (res.status === 200) {
                 this.props.login();
             }
@@ -91,7 +109,13 @@ class Login extends React.Component {
                     />
                 </Form.Group>
                 <Form.Group controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Remember me" />
+                    <Form.Check
+                        type="checkbox"
+                        label="Remember me"
+                        onChange={event => this.setState({
+                            remember_me: event.target.value === 'on' ? true : false
+                        })}
+                    />
                 </Form.Group>
                 <Button
                     variant="primary"

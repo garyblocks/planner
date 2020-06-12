@@ -1,4 +1,4 @@
-import { ADD_EXERCISE, SWAP_EXERCISE, ACTIVATE_EXERCISE } from "../actionTypes";
+import { ADD_EXERCISE, SWAP_EXERCISE, DELETE_EXERCISE} from "../actionTypes";
 
 const initialState = {
     allIds: [],
@@ -9,7 +9,7 @@ export default function(state = initialState, action) {
     switch (action.type) {
 
         case ADD_EXERCISE: {
-            const { id, tag, title, level, frequency } = action.payload;
+            const { id, tag, title } = action.payload;
             console.log(action.payload);
             return {
                 ...state,
@@ -19,11 +19,17 @@ export default function(state = initialState, action) {
                     [id]: {
                         tag: tag,
                         name: title,
-                        level: level,
-                        freq: frequency,
                         index: state.allIds.length
                     }
                 }
+            };
+        }
+
+        case DELETE_EXERCISE: {
+            const { id } = action.payload;
+            return {
+                ...state,
+                allIds: state.allIds.filter((ex_id, index) => ex_id !== id)
             };
         }
 
@@ -40,20 +46,6 @@ export default function(state = initialState, action) {
                     [id2]: {
                         ...state.byIds[id2],
                         index: index1
-                    }
-                }
-            };
-        }
-
-        case ACTIVATE_EXERCISE: {
-            const { id } = action.payload;
-            return {
-                ...state,
-                byIds: {
-                    ...state.byIds,
-                    [id]: {
-                        ...state.byIds[id],
-                        active: true
                     }
                 }
             };

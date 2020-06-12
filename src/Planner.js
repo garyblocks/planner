@@ -18,8 +18,8 @@ import { addPlan, togglePlan, addExercise, addTag } from './redux/actions';
 import { getLogin } from "./redux/selectors";
 
 const mapStateToProps = state => {
-    const login = getLogin(state);
-    return { login }
+    const login_status = getLogin(state);
+    return { login_status }
 }
 
 class Planner extends React.Component {
@@ -44,10 +44,18 @@ class Planner extends React.Component {
         )
     }
 
+    checkLogin() {
+        if (this.props.login_status) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     componentDidUpdate() {
         console.log(API_URL);
         console.log(process.env);
-        if (this.props.login) {
+        if (this.props.login_status) {
             // download plans
             axios.post(API_URL + 'planner/get_plans', {}, {withCredentials: true})
             .then(res => {
@@ -79,9 +87,7 @@ class Planner extends React.Component {
                     this.props.addExercise(
                         item.id,
                         item.tag,
-                        item.title,
-                        item.level,
-                        item.frequency
+                        item.name,
                     );
                 }.bind(this));
             })
@@ -101,7 +107,7 @@ class Planner extends React.Component {
     render() {
         return (
             <Container className="planner-app">
-                {this.props.login ? this.renderPlannerContent() : <Login />}
+                {this.checkLogin() ? this.renderPlannerContent() : <Login />}
             </Container>
         )
     };

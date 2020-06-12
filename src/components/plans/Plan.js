@@ -85,8 +85,20 @@ const Plan = ({ plan, swapPlan }) => {
     const renderColor = () => {
         if (plan.completed) {
             return "secondary";
+        } else if (plan.source === 'ex') {
+            return "primary";
         } else {
             return "success";
+        }
+    }
+
+    const renderBackgroundColor = () => {
+        if (plan.completed) {
+            return "#f0f1f2";
+        } else if (plan.source === 'ex') {
+            return "#d1e4fc";
+        } else {
+            return "#d9ecdb";
         }
     }
 
@@ -114,7 +126,7 @@ const Plan = ({ plan, swapPlan }) => {
                     aria-controls={ "plan_" + plan.id }
                     aria-expanded={open}
                     style={{
-                        backgroundColor: plan.completed ? "#f0f1f2": "#d9ecdb"
+                        backgroundColor: renderBackgroundColor()
                     }}
                 >
                 <Row>
