@@ -34,7 +34,8 @@ const AddPlan = ({ tags, addPlan }) => {
         const data = {
             tag: tagName.length !== 0 ? tagName : defaultTag,
             plan: planName,
-            view: 'back'
+            view: 'back',
+            source: 'home'
         };
         console.log(data);
         // sets state back to empty string
@@ -47,7 +48,9 @@ const AddPlan = ({ tags, addPlan }) => {
                 data.tag,
                 planName,
                 planName,
-                "back"
+                "back",
+                "home",
+                res.data
             );
             setPlanName("");
         });

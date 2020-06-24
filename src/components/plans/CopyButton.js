@@ -12,7 +12,9 @@ const CopyButton = ({ plan, addPlan }) => {
                 const data = {
                     tag: plan.tag,
                     plan: plan.title,
-                    view: plan.view
+                    view: plan.view,
+                    source: plan.source,
+                    source_id: plan.source_id
                 }
                 axios.post(API_URL + 'planner/plans', {data}, {withCredentials: true})
                 .then(res => {
@@ -22,7 +24,9 @@ const CopyButton = ({ plan, addPlan }) => {
                         data.tag,
                         data.plan,
                         data.plan,
-                        data.view
+                        data.view,
+                        data.source,
+                        data.source_id
                     );
                 });
             }}

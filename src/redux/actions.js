@@ -6,9 +6,9 @@ import {
     ADD_TAG, DELETE_TAG
 } from "./actionTypes";
 
-export const addPlan = (id, tag, title, content, view, source) => ({
+export const addPlan = (id, tag, title, content, view, source, source_id) => ({
     type: ADD_PLAN,
-    payload: { id, tag, title, content, view, source }
+    payload: { id, tag, title, content, view, source, source_id }
 });
 
 export const togglePlan = id => ({

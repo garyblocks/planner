@@ -1,15 +1,16 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useDrag, useDrop } from 'react-dnd'
 import { connect } from "react-redux";
-import { swapExercise, addPlan } from "../../redux/actions";
+import { swapExercise } from "../../redux/actions";
 import Card from 'react-bootstrap/Card'; 
+import Collapse from 'react-bootstrap/Collapse'; 
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
 import Button from 'react-bootstrap/Button'; 
 import { ItemTypes } from '../../dndConstants';
 import ExerciseButtons from './ExerciseButtons';
 
-const Exercise = ({ exercise, swapExercise, addPlan }) => {
+const Exercise = ({ exercise, swapExercise }) => {
     const ref = useRef(null);
 
     const [, drop] = useDrop({
@@ -53,9 +54,6 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
                 hoverIndex
             );
             // Note: we're mutating the monitor item here!
-            // Generally it's better to avoid mutations,
-            // but it's good here for the sake of performance
-            // to avoid expensive index searches.
             item.index = hoverIndex
         },
     })
@@ -73,6 +71,8 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
 
     drag(drop(ref));
 
+    const [open, setOpen] = useState(false);
+
     return (
         <Row 
             ref={ref}
@@ -85,7 +85,11 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
             <Col xs={1}></Col>
             <Col xs={10}>
             <li><Card border="dark">
-                <Card.Header>
+                <Card.Header
+                    onClick={() => setOpen(!open)}
+                    aria-controls={ "ex_" + exercise.id }
+                    aria-expanded={open}
+                >
                 <Row>
                     <Col xs={1}>
                     <Button
@@ -108,6 +112,13 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
                     </Col>
                 </Row>
                 </Card.Header>
+                <Collapse in={open} id={ "ex_" + exercise.id }>
+                    <div>
+                        <Card.Body>
+                        </Card.Body>
+                    </div>
+                </Collapse>
+                
             </Card></li>
             </Col>
             <Col xs={1}></Col>
@@ -117,5 +128,5 @@ const Exercise = ({ exercise, swapExercise, addPlan }) => {
 
 export default connect(
     null,
-    { swapExercise, addPlan }
+    { swapExercise }
 )(Exercise);
