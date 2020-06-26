@@ -8,8 +8,13 @@ const ExerciseButtons = ({ exercise }) => {
     return (
         <Row>
             <Col xs={4}></Col>
-            <Col xs={4} style={{ color: "#f5c344" }}><LaunchButton exercise={exercise}/></Col>
-            <Col xs={4} style={{ color: "#cb444a" }}><DeleteButton exercise={exercise}/></Col>
+            <Col xs={4} style={{ color: "#f5c344", cursor: "pointer" }}>
+                <LaunchButton exercise={exercise}/>
+            </Col>
+
+            <Col xs={4} style={{ color: "#cb444a", cursor: "pointer" }}>
+                <DeleteButton exercise={exercise}/>
+            </Col>
         </Row>
     )
 };

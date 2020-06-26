@@ -8,9 +8,17 @@ import CopyButton from './CopyButton';
 const PlanButtons = ({ plan }) => {
     return (
         <Row>
-            <Col xs={1} style={{ color: "#53a451" }}><CheckButton plan={plan}/></Col>
-            <Col xs={1} style={{ color: "#f5c344" }}><CopyButton plan={plan}/></Col>
-            <Col xs={1} style={{ color: "#cb444a" }}><DeleteButton plan={plan}/></Col>
+            <Col xs={1} style={{ color: "#53a451", cursor: "pointer" }}>
+                <CheckButton plan={plan}/>
+            </Col>
+
+            <Col xs={1} style={{ color: "#f5c344", cursor: "pointer" }}>
+                <CopyButton plan={plan}/>
+            </Col>
+
+            <Col xs={1} style={{ color: "#cb444a", cursor: "pointer" }}>
+                <DeleteButton plan={plan}/>
+            </Col>
         </Row>
     )
 };

@@ -57,7 +57,7 @@ const PlanBody = ({ plan, changeData }) => {
                         e.preventDefault();
                     }} 
                     className='plan-content-textarea'
-                /> : <Card.Text onClick={() => setEditable(true)}>
+                /> : <Card.Text style={{ cursor: "text" }} onClick={() => setEditable(true)}>
                     {planContent}
                 </Card.Text>
             }

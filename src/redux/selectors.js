@@ -6,9 +6,6 @@ export const getTagState = store => store.tags;
 export const getPlanList = store =>
     getPlanState(store) ? getPlanState(store).allIds : [];
 
-export const getTodoById = (store, id) =>
-    getPlanState(store) ? { ...getPlanState(store).byIds[id], id } : {};
-
 export const getLogin = store => getPlanState(store).login;
 
 export const getTags = store => getTagState(store).tags;
