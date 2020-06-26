@@ -69,3 +69,10 @@
 .exercise-button {
     margin: 3px;
 }
+
+
+.react-calendar-heatmap .color-scale-1 { fill: #bfd6f6; }
+.react-calendar-heatmap .color-scale-2 { fill: #8dbdff; }
+.react-calendar-heatmap .color-scale-3 { fill: #64a1f4; }
+.react-calendar-heatmap .color-scale-4 { fill: #4a91f2; }
+.react-calendar-heatmap .color-scale-5 { fill: #3b7dd8; }

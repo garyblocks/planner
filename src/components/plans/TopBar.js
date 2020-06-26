@@ -45,7 +45,7 @@ const TopBar = ({ deleteAllComplete }) => {
                         Exercise
                     </Link>
                     <Link to='/exercise'>
-                        <Nav.Item className="nav-link">Event</Nav.Item>
+                        <Nav.Item className="nav-link">Goal</Nav.Item>
                     </Link>
                     <NavDropdown title={dropdownTitle} id="basic-nav-dropdown">
                         <NavDropdown.Item href="#action/3.1" onClick={() => setDropdownTitle("Add Tag")}>Add Tag</NavDropdown.Item>

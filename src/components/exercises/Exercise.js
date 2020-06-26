@@ -7,8 +7,12 @@ import Collapse from 'react-bootstrap/Collapse';
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col'; 
 import Button from 'react-bootstrap/Button'; 
+import axios from 'axios';
+import CalendarHeatmap from 'react-calendar-heatmap';
+import 'react-calendar-heatmap/dist/styles.css';
 import { ItemTypes } from '../../dndConstants';
 import ExerciseButtons from './ExerciseButtons';
+import { API_URL } from '../../constants';
 
 const Exercise = ({ exercise, swapExercise }) => {
     const ref = useRef(null);
@@ -72,6 +76,7 @@ const Exercise = ({ exercise, swapExercise }) => {
     drag(drop(ref));
 
     const [open, setOpen] = useState(false);
+    const [logData, setLogData] = useState([]);
 
     return (
         <Row 
@@ -86,7 +91,15 @@ const Exercise = ({ exercise, swapExercise }) => {
             <Col xs={10}>
             <li><Card border="dark">
                 <Card.Header
-                    onClick={() => setOpen(!open)}
+                    onClick={() => {
+                        setOpen(!open);
+                        axios.get(API_URL + 'planner/get_exercise_log_counts/' + exercise.id, {withCredentials: true})
+                        .then(res => {
+                            console.log(res);
+                            console.log(res.data);
+                            setLogData(res.data);
+                        })
+                    }}
                     aria-controls={ "ex_" + exercise.id }
                     aria-expanded={open}
                 >
@@ -115,6 +128,15 @@ const Exercise = ({ exercise, swapExercise }) => {
                 <Collapse in={open} id={ "ex_" + exercise.id }>
                     <div>
                         <Card.Body>
+                        <CalendarHeatmap
+                            values={logData}
+                            classForValue={(value) => {
+                                if (!value) {
+                                    return 'color-empty';
+                                }
+                                return `color-scale-${value.count}`;
+                            }}
+                        />
                         </Card.Body>
                     </div>
                 </Collapse>
